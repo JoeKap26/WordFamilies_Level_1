@@ -766,7 +766,7 @@
             autoAdvanceTimer = null;
             autoAdvancePending = false;
             if (generation === autoAdvanceGeneration && stillCurrent()) next();
-          }, 2000);
+          }, 1000);
         };
         if (activeAudio) {
           const audio = activeAudio, ended = audio.onended, failed = audio.onerror;
@@ -1021,7 +1021,7 @@ if (completed && !label) {
         if (!sentenceTarget) {
           const remaining = remainingSentences();
           if (!remaining.length) { updateSentenceChallenge(); return; }
-          sentenceTarget = remaining[0];
+          sentenceTarget = remaining[Math.floor(Math.random() * remaining.length)];
         }
         playChallengeSentence(sentenceTarget);
         sentenceMessage.textContent = 'Listen carefully… then tap the sentence you heard!';
@@ -1328,7 +1328,7 @@ if (completed && !label) {
           message.textContent = 'You found all 6 words in this family!';
           return;
         }
-        target = remaining[0];
+        target = remaining[Math.floor(Math.random() * remaining.length)];
         challengeButton.classList.add('active');
         challengeButton.textContent = '🔁 Hear it again';
         message.textContent = 'Listen carefully… then tap the word!';

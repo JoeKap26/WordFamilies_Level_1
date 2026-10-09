@@ -1535,7 +1535,7 @@ if (completed && !label) {
       introSong.addEventListener('error', stopIntroSong);
       document.querySelector('#continuePractice').addEventListener('click', () => {
         const user = users.find(u => u.id === previousUser.value);
-        if (user) startWithIntro(() => startUser(user, true));
+        if (user) { stopIntroSong(); startUser(user, true); }
       });
       function showUserPicker() {
         stopIntroSong();
@@ -1580,7 +1580,8 @@ if (completed && !label) {
         practicePage.hidden = false;
         burst.classList.remove('show');
         render();
-        showFamilySelection(); // Both start buttons land on the family selection page.
+        if (resume) resumeFamily(Math.max(0, continueFamily(user)));
+        else showFamilySelection(); // New users begin on the family selection page.
       }
 
       document.querySelector('#userForm').addEventListener('submit', event => {
@@ -1953,7 +1954,7 @@ if (completed && !label) {
       layout('practiceUsers').onclick=goUsers;
       layout('layoutBack').onclick=goUsers;
       layout('layoutFamilies').onclick=goFamilies;
-      layout('homeContinue').onclick=()=>resumeFamily(Math.max(0,continueFamily(activeUser)));
+      layout('homeContinue').onclick=()=>{stopIntroSong();resumeFamily(Math.max(0,continueFamily(activeUser)));};
       layout('homeFinal').onclick=()=>{q('openAllWords').click();q('quizTab').click();};
       layout('layoutWords').onclick=()=>resumeFamily(index,'words');
       layout('layoutSentences').onclick=()=>resumeFamily(index,'sentences');

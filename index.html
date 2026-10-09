@@ -482,6 +482,7 @@
   
 </head>
 <body>
+  <audio id="introSong" preload="auto" src="audio/songs/Intro.mp3"></audio>
   <dialog id="parentSettings" aria-label="Parent Settings"><h2>Parent Settings</h2><div id="parentSettingsContent"></div></dialog>
   <dialog class="welcome-notice" id="welcomeNotice" aria-label="Welcome" aria-describedby="welcomeNoticeMessage">
     <p id="welcomeNoticeMessage">I created this entire word-family project for Elara and Ari! Names and progress are saved in your browser, clearing the site’s stored data removes them.</p>
@@ -823,7 +824,7 @@ let label = button.querySelector('.family-completion');
 if (completed && !label) {
   label = document.createElement('span');
   label.className = 'family-completion';
-  label.textContent = '✓ Completed';
+  label.textContent = '✓ Completed 🎵';
   button.append(label);
 } else if (!completed && label) {
   label.remove();
@@ -833,7 +834,7 @@ if (completed && !label) {
           const sentencesDone = sentenceData.filter(sentence => sentence.family === item.family && foundSentences.has(sentence.file)).length;
           const quizDone = familyQuizCount(item);
           const visibleCounts = [
-            ['Words', wordsDone, item.words.length], ['Sentences', sentencesDone, sentenceData.filter(s => s.family === item.family).length], ['Family Challenge', quizDone, 3]
+            ['Words', wordsDone, item.words.length], ['Sentences', sentencesDone, sentenceData.filter(s => s.family === item.family).length], ['Challenge', quizDone, 3]
           ].filter(([, count]) => count > 0);
           if (visibleCounts.length) {
             if (!progress) {
@@ -866,6 +867,7 @@ if (completed && !label) {
       }
 
       function stopAudio(clearSentences = true) {
+        stopFamilySong();
         cancelAutoAdvance();
         cancelFamilyQuizAudio();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -1471,7 +1473,27 @@ if (completed && !label) {
         }
         return index;
       }
-      function openFamily(familyIndex) { resumeFamily(familyIndex); }
+      // A completed family's song is unlocked on the family picker.
+      const familySong = new Audio();
+      familySong.preload = 'none';
+      function stopFamilySong() {
+        familySong.pause();
+        familySong.currentTime = 0;
+      }
+      function openFamily(familyIndex) {
+        stopIntroSong();
+        stopFamilySong();
+        if (activeUser && familyIsComplete(families[familyIndex], activeUser)) {
+          stopAudio();
+          showWordsAt(familyIndex);
+          // E.g. -at family => audio/songs/-at.mp3
+          familySong.src = `audio/songs/${encodeURIComponent(families[familyIndex].family)}.mp3`;
+          const playing = familySong.play();
+          if (playing && typeof playing.catch === 'function') playing.catch(() => {});
+          return;
+        }
+        resumeFamily(familyIndex);
+      }
       function resumeFamily(familyIndex, preferred) {
         if (!activeUser) return;
         const start = (familyIndex + families.length) % families.length;
@@ -1498,11 +1520,25 @@ if (completed && !label) {
           ? (continueFamily(user) < 0 ? 'All families complete!' : `${families[continueFamily(user)].family} family · Next unfinished activity`) : '';
       }
       previousUser.addEventListener('change', updateContinueDetail);
+      // Start the intro from the user's click and keep playing on the family grid.
+      const introSong = document.getElementById('introSong');
+      function stopIntroSong() {
+        introSong.pause();
+        introSong.currentTime = 0;
+      }
+      function startWithIntro(next) {
+        stopIntroSong();
+        next(); // Navigate immediately; the song continues on the family page.
+        const playback = introSong.play();
+        if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+      }
+      introSong.addEventListener('error', stopIntroSong);
       document.querySelector('#continuePractice').addEventListener('click', () => {
         const user = users.find(u => u.id === previousUser.value);
-        if (user) startUser(user, true);
+        if (user) startWithIntro(() => startUser(user, true));
       });
       function showUserPicker() {
+        stopIntroSong();
         familyGroupQuizPage.hidden = true;
         closeWordHub();
         stopAudio();
@@ -1544,8 +1580,7 @@ if (completed && !label) {
         practicePage.hidden = false;
         burst.classList.remove('show');
         render();
-        if (resume) resumeFamily(index);
-        else showFamilySelection();
+        showFamilySelection(); // Both start buttons land on the family selection page.
       }
 
       document.querySelector('#userForm').addEventListener('submit', event => {
@@ -1593,7 +1628,7 @@ if (completed && !label) {
         nameError.hidden = true;
         const user = { id: crypto.randomUUID(), name, read: [], found: [], foundSentences: [], family: 0 };
         users.push(user);
-        startUser(user);
+        startWithIntro(() => startUser(user));
       });
       document.querySelector('#changeName').addEventListener('click', () => {
         saveProgress();

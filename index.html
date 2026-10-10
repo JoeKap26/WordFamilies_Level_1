@@ -781,7 +781,44 @@
 #familyPage .kid-home-cards-updated .kid-continue{width:auto;background:#e8f5ee;border:2px solid #a6d8c2}
 #familyPage .kid-image-card:hover{filter:brightness(.98)}
 @media(max-width:540px){#familyPage .kid-home-cards-updated{gap:8px}#familyPage .kid-image-card{padding:5px}#familyPage .kid-image-card img{height:110px}#familyPage .kid-learn-wide img{height:125px}}
-</style></head>
+
+/* Soft differentiated family-page tiles and compact illustrated navigation */
+#familyPage .kid-home-cards-updated {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:14px}
+#familyPage .kid-home-cards-updated > .kid-image-card {height:100%;min-height:190px;margin:0;box-sizing:border-box}
+#familyPage #kidContinue {background:#e6f5ef!important;border-color:#a8d9c6!important}
+#familyPage #kidChallenge {background:#edf0ff!important;border-color:#b9c5ef!important}
+#familyPage #kidLearn {background:#fff3e7!important;border-color:#efd2ad!important}
+#familyPage .kid-image-card img {max-width:100%;object-fit:contain}
+#familyPage .family-tile, #familyPage .family-card {border-radius:20px}
+#familyPage .family-card:nth-child(5n+1),#familyPage .family-tile:nth-child(5n+1){background:#eaf6ff}
+#familyPage .family-card:nth-child(5n+2),#familyPage .family-tile:nth-child(5n+2){background:#f2eaff}
+#familyPage .family-card:nth-child(5n+3),#familyPage .family-tile:nth-child(5n+3){background:#fff3e5}
+#familyPage .family-card:nth-child(5n+4),#familyPage .family-tile:nth-child(5n+4){background:#e9f8ee}
+#familyPage .family-card:nth-child(5n+5),#familyPage .family-tile:nth-child(5n+5){background:#fff0f5}
+.header-nav-icon {width:27px;height:27px;object-fit:contain;vertical-align:middle;flex-shrink:0;margin-right:6px}
+#parentSettingsButton,#practiceUsers,#layoutFamilies{align-items:center;justify-content:center}
+@media(max-width:540px){.header-nav-icon{width:21px;height:21px;margin-right:3px}#familyPage .kid-home-cards-updated>.kid-image-card{min-height:125px}}
+</style><style id="lightPopupAndNavigation20261010">
+/* Lighter reading popup and letter tiles */
+#wordReadDialog {background:#fcfdff!important; color:#34445e!important; border:1px solid #e5edfa!important;}
+#wordReadDialog .read-part, #wordReadDialog .letter-tile, #wordReadDialog .phoneme-tile {background:#f3f7ff!important; border-color:#e1eafb!important;}
+#wordReadDialog .read-part.blend {background:#eaf6ff!important;}
+#wordReadDialog .read-sentence span.active {background:#fff7d9!important;}
+#wordReadDialog #guidedBlendActions button {background:#eaf3ff!important; border:1px solid #d9e7fa!important; color:#294a76!important; box-shadow:none!important;}
+#wordReadDialog .read-navigation button {background:#f0f8f5!important; color:#c62828!important; border:1px solid #d9eae4!important; box-shadow:none!important; font-weight:800!important;}
+#wordReadDialog .read-navigation button:hover {background:#eaf3ff!important;}
+/* Swap the popup and navigation backgrounds; retain readable blue arrows and red labels. */
+#wordReadDialog {background:#f0f8f5!important;}
+#wordReadDialog .read-navigation button {background:#fcfdff!important;border-color:#dce8f4!important;color:#c62828!important;}
+#wordReadDialog .read-navigation button:hover {background:#eaf3ff!important;}
+#wordReadDialog .read-navigation .nav-arrow {color:#2068b8!important;font-weight:900!important;}
+#wordReadDialog .read-sentence {font-size:clamp(1.2rem,3vw,1.6rem)!important;line-height:1.8!important;}
+#wordReadDialog .read-sentence span.active {background:#fff0a9!important;color:#173a65!important;padding:2px 3px;border-radius:6px;}
+
+/* Soften family-page activity rectangles and family selection squares */
+#practicePage .family-actions button, #practicePage .family-action, #practicePage .family-card, #familiesPage .family-card, .family-tile {filter:saturate(.82);}
+</style>
+</head>
 <body>
   <audio id="introSong" preload="auto" src="audio/songs/Intro.mp3"></audio>
   <dialog id="parentSettings" aria-label="Parent Settings"><h2>Parent Settings</h2><div id="parentSettingsContent"></div></dialog>
@@ -817,13 +854,13 @@
     </section>
   </main>
   <main class="app" id="practicePage" hidden>
-    <button class="nav" id="practiceUsers" type="button">Users</button>
+    <button class="nav" id="practiceUsers" type="button"><img class="header-nav-icon" src="users.png" alt=""> Users</button>
     <button class="challenge" id="homeContinue" type="button">▶️ Continue Playing</button>
     <button class="nav" id="homeFinal" type="button">🏆 Play Challenge</button>
-    <button class="nav" id="parentSettingsButton" type="button">⚙️ Parent Settings</button>
+    <button class="nav" id="parentSettingsButton" type="button"><img class="header-nav-icon" src="parentSettings.png" alt=""> Parent Settings</button>
     <div class="page-heading"><div><p class="eyebrow" id="layoutContext">Word Families Level 1</p><h1 id="layoutTitle" tabindex="-1">Choose a Word Family</h1></div>
       <div class="stars" aria-label="Words, sentences, and family quiz answers solved"><span aria-hidden="true">⭐</span><span id="starCount">0</span></div></div>
-    <nav class="shared-navigation" aria-label="Page navigation"><button class="nav" id="layoutBack" type="button">← Back</button><button class="nav" id="layoutFamilies" type="button">🏠 All Families</button><p id="layoutProgress" role="status"></p></nav>
+    <nav class="shared-navigation" aria-label="Page navigation"><button class="nav" id="layoutBack" type="button">← Back</button><button class="nav" id="layoutFamilies" type="button"><img class="header-nav-icon" src="families.png" alt=""> All Families</button><p id="layoutProgress" role="status"></p></nav>
     <nav id="activityTabs" hidden aria-hidden="true"><button id="layoutWords" type="button">Words</button><button id="layoutSentences" type="button">Sentences</button><button id="layoutQuiz" type="button">Challenge</button></nav>
     <nav class="activity-tabs" id="hubTabs" aria-label="All words activities" hidden><button class="nav" id="layoutBrowse" type="button">Explore All Words</button><button class="nav" id="layoutAllQuiz" type="button">Final Word Challenge</button></nav>
     <div hidden><button id="changeName" type="button">Switch User</button></div>
@@ -837,7 +874,7 @@
   <button id="kidChallenge" class="kid-card kid-challenge kid-image-card" type="button" aria-label="Challenge"><img src="Quiz.png" alt="Challenge Quiz"></button>
  </div>
  <button id="kidLearn" class="kid-learn kid-image-card kid-learn-wide" type="button" aria-label="Learn Words"><img src="wordlist.png" alt="Learn Words — Word List"></button>
- <div class="kid-home-bottom"><button id="kidChangeUser" type="button">👤 Change Player</button><button id="kidSettings" type="button">⚙️ Parent Settings</button></div>
+ <div class="kid-home-bottom"><button id="kidChangeUser" type="button">👤 Change Player</button><button id="kidSettings" type="button"><img class="header-nav-icon" src="parentSettings.png" alt=""> Parent Settings</button></div>
  </section>
  <div class="kid-family-list" id="kidFamilyList">
 <h2 class="family-selection-heading" id="familySelectionTitle" tabindex="-1">Choose a Word Family</h2>
@@ -1441,8 +1478,16 @@ if (completed && !label) {
       function updatePopupNavigation(){
         const {entries,position}=popupPosition();
         const sentence=readPopupEntry?.kind==='sentences';
-        readPrevious.textContent=position>0 ? '← '+(sentence ? entries[position-1].sentence : entries[position-1].word) : '';
-        readNext.textContent=position>=0&&position<entries.length-1 ? (sentence ? entries[position+1].sentence : entries[position+1].word)+' →' : '';
+        function setNavigationLabel(button,arrow,word,arrowFirst){
+          button.replaceChildren();
+          if(!word)return;
+          const arrowSpan=document.createElement('span');arrowSpan.className='nav-arrow';arrowSpan.textContent=arrow;
+          const wordSpan=document.createElement('span');wordSpan.textContent=word;
+          if(arrowFirst)button.append(arrowSpan,document.createTextNode(' '),wordSpan);
+          else button.append(wordSpan,document.createTextNode(' '),arrowSpan);
+        }
+        setNavigationLabel(readPrevious,'←',position>0?entries[position-1].word:'',true);
+        setNavigationLabel(readNext,'→',position>=0&&position<entries.length-1?entries[position+1].word:'',false);
         readPrevious.hidden=position<=0;
         readNext.hidden=position<0||position>=entries.length-1;
       }
@@ -1458,7 +1503,7 @@ if (completed && !label) {
         popupCancelAudio();readPopupEntry=entry;
         document.getElementById('wordReadTitle').textContent=entry.kind==='sentences' ? '' : '';
         renderPopupParts(entry.word || '');
-        renderPopupSentence(entry.kind === 'sentences' ? (entry.word || '') : '');
+        renderPopupSentence(entry.kind === 'sentences' ? (entry.sentence || '') : '');
         wordReadSentence.hidden = entry.kind !== 'sentences';
         
         wordReadStatus.textContent='';
@@ -1484,7 +1529,7 @@ if (completed && !label) {
         wordReadStatus.textContent='Reading...';
         const sentenceRecording = entry.kind === 'sentences' ? sentenceData.find(item => item.file === entry.file) : null;
         const path=entry.kind==='sentences' ? `audio/sentences/${sentenceRecording?.audioFile || entry.audioFile || entry.file}.mp3` : `audio/words/${audioFileName(entry.word)}.mp3`;
-        popupPlayFile(path,()=>{if(token!==readPopupToken)return;clearPopupTiming();wordReadStatus.textContent='';entry.after?.();},()=>{wordReadStatus.textContent='Audio unavailable.';});
+        popupPlayFile(path,()=>{if(token!==readPopupToken)return;clearPopupTiming();wordReadStatus.textContent='';if(entry.kind==='sentences')words.forEach(p=>p.classList.remove('active'));entry.after?.();},()=>{wordReadStatus.textContent='Audio unavailable.';});
         if(entry.kind==='words')parts.forEach(p=>p.classList.add('all'));
         else readPopupTimer=setInterval(()=>{
           if(token!==readPopupToken)return;
@@ -1492,7 +1537,7 @@ if (completed && !label) {
           if (!Number.isFinite(duration) || duration <= 0) return;
 
           // Advance the highlight speed 150 milliseconds earlier
-          const highlightLead = 0.25;
+          const highlightLead = 0.12;
 
           const adjustedTime = Math.min(
             duration,
@@ -2338,7 +2383,17 @@ if (completed && !label) {
       layout('parentSettingsButton').onclick=()=>{ensureFinalRecord();updateAllQuizTotals();layout('parentSettings').showModal();};
       layout('parentSettings').addEventListener('click',event=>{if(event.target===layout('parentSettings'))layout('parentSettings').close();});
       
-      function setLayoutText(id,value){if(layout(id).textContent!==value)layout(id).textContent=value;}
+      
+function setNavLabel(id, src, label) {
+  const button = document.getElementById(id);
+  if (!button) return;
+  const icon = document.createElement('img');
+  icon.className = 'header-nav-icon';
+  icon.src = src;
+  icon.alt = '';
+  button.replaceChildren(icon, document.createTextNode(' ' + label));
+}
+function setLayoutText(id,value){if(layout(id).textContent!==value)layout(id).textContent=value;}
       function syncLayout(){
         layout('activityTabs').hidden=true;
         const picking=practicePage.hidden;
@@ -2347,7 +2402,7 @@ if (completed && !label) {
         document.querySelector('.stars').hidden=picking;
         // Login: Users is intentionally unavailable; All Families is the current page on the picker.
         const usersButton=layout('practiceUsers'), familiesButton=layout('layoutFamilies');
-        if(usersButton.textContent.trim()!=='👥 Users') usersButton.textContent='👥 Users';
+        if (!usersButton.querySelector('img.header-nav-icon')) setNavLabel('practiceUsers','users.png','Users');
         usersButton.disabled=picking;
         usersButton.classList.toggle('header-inactive',picking);
         usersButton.setAttribute('aria-disabled',String(picking));
@@ -2390,7 +2445,7 @@ if (completed && !label) {
           familyLabel(layout('layoutContinue'),'Next Family ',families[nearbyUnfinishedFamily(1)].family,' ➡️');
         }else if(!hub.hidden){title=q('quizPanel').hidden?'All Words':'Final Challenge';progress=!q('quizPanel').hidden&&!q('quizRound').hidden?q('quizCounter').textContent:'';}
         if(familyActivity)familyLabel(layout('layoutTitle'),'The ',families[index].family,' Family');else setLayoutText('layoutTitle',title);setLayoutText('layoutProgress',progress);
-        setLayoutText('layoutBack','Users');setLayoutText('layoutFamilies','🏠 All Families');setLayoutText('practiceUsers','👥 Users');
+        setLayoutText('layoutBack','Users');setNavLabel('layoutFamilies','families.png','All Families');setNavLabel('practiceUsers','users.png','Users');
         ['layoutBrowse','layoutAllQuiz'].forEach((id,i)=>{const selected=!hub.hidden&&(i===0?q('quizPanel').hidden:!q('quizPanel').hidden);if(selected)layout(id).setAttribute('aria-current','page');else layout(id).removeAttribute('aria-current');});
         updateAllQuizTotals();
       }

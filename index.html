@@ -872,7 +872,7 @@
 #familyPage .family-tile .family-tile-example .family-highlight,
 #familyPage .family-tile .family-tile-example .family-part {color:#c62828!important;}
 </style>
-<style>.new-user-action-icon{width:34px;height:34px;object-fit:contain;vertical-align:middle;margin-right:12px}</style>
+<style>.new-user-action-icon{height:62px;max-height:42px!important;width:auto!important;object-fit:contain;flex-shrink:0;margin:0}</style>
 <style id="login-images-five-percent">
 /* Enlarge every login image, including the new-user form, by 5%. */
 #startPage img { transform: scale(1.05); transform-origin: center; }
@@ -924,6 +924,10 @@
 <style id="compact-families-card-borders">
 #familyPage .kid-home-cards-updated > .kid-image-card {padding:0!important;min-height:0!important;}
 #familyPage .family-tile {min-height:0;padding:10px 6px;gap:8px;}
+</style>
+<style id="clean-all-words-navigation">#practicePage .centered-heading[hidden]{display:none!important;}</style>
+<style>
+#nameForm .start-button, #nameForm #cancelNewUser {display:flex;align-items:center;justify-content:center;gap:15px;font-size:clamp(1.3rem,4vw,2rem)!important;font-weight:900!important;}
 </style>
 </head>
 <body>
@@ -2569,7 +2573,8 @@ function setLayoutText(id,value){if(layout(id).textContent!==value)layout(id).te
         layout('browseFamilyFilter').hidden=picking||hub.hidden||!q('quizPanel').hidden;
         layout('hubTabs').classList.toggle('browse-navigation',!q('browseFamilyFilter').hidden);
         selectionNavigation.hidden=picking||familyPage.hidden;
-        layout('hubTabs').hidden=picking||hub.hidden;
+        layout('hubTabs').hidden=true;
+        headingRow.hidden=!hub.hidden && q('quizPanel').hidden;
         layout('familySound').hidden=!familyActivity;
         layout('activityFooter').hidden=true;
         if(picking)return;

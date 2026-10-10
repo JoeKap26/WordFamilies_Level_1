@@ -1,0 +1,11 @@
+CHILD-FRIENDLY LAYOUT UPDATE
+- Visual home cards for Learn Words and Challenge, Continue Playing, Change Player, Parent Settings.
+- Learning progression strip: Hear, Find, Read, Challenge.
+- Dedicated speaker buttons beside word/sentence instructions.
+- Original audio, questions, progress, and lesson code preserved.
+- Instruction audio is optional: audio/instructions/choose-word.mp3 and choose-sentence.mp3.
+  If those MP3s are absent, ONLY these explicitly clicked speaker buttons use system speech.
+  There is no hover narration or general Read Aloud toggle.
+- ElevenLabs text:
+  choose-word.mp3: Listen, then choose the word you hear.
+  choose-sentence.mp3: Listen, then choose the sentence you hear.

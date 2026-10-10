@@ -470,6 +470,9 @@
 #wordReadDialog .sound-part{font-size:clamp(2rem,7vw,3rem);font-weight:750;padding:8px 13px;border-radius:12px;background:#eaf0fa;color:#213858}
 #wordReadDialog .sound-part.active{background:#ffe166;color:#1c2b42}
 #wordReadDialog .sound-part.all{background:#c9f2d5}
+#wordReadDialog .sound-part.blend{background:#bde5ff;color:#16375a}
+#wordReadDialog .read-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+#wordReadDialog .read-actions button{min-width:135px}
 #wordReadDialog .read-actions{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:16px 0}
 #wordReadDialog .read-actions button{padding:12px 16px;border:0;border-radius:12px;background:#22529b;color:white;font-weight:700;cursor:pointer}
 
@@ -478,8 +481,258 @@
 #wordReadDialog .read-sentence{font-size:1.3rem;line-height:1.9}
 #wordReadDialog .read-sentence span.active{background:#ffe166;border-radius:5px}
 #wordReadDialog .read-status{color:#52617a;min-height:1.5em}
+
+/* Child-friendly visual navigation: no general hover narration or TTS. */
+#practicePage .page-heading{background:linear-gradient(120deg,#eaf3ff,#fff9e8);border-radius:24px;padding:18px 24px;margin:12px 0 20px}
+#practicePage .page-heading h1{font-size:clamp(2rem,4vw,3.2rem);line-height:1.12}
+#practicePage .eyebrow{font-size:1rem;letter-spacing:.03em}
+#practicePage button{touch-action:manipulation}
+#practicePage .nav,#practicePage .challenge,#continuePractice,#createNewUser{min-height:64px;border-radius:20px;font-weight:800}
+#activityTabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#activityTabs[hidden],#hubTabs[hidden]{display:none!important}
+#activityTabs .nav{min-height:112px;font-size:clamp(1.1rem,2.2vw,1.6rem);background:#f3f7ff;border:3px solid #d6e4ff;box-shadow:0 5px 0 #c4d4ed}
+#activityTabs #layoutWords{background:#e8f2ff;border-color:#96bffb}
+#activityTabs #layoutSentences{background:#e4f9ee;border-color:#8ad6b0}
+#activityTabs #layoutQuiz{background:#fff1d1;border-color:#f4cd6d}
+#activityTabs .nav:focus-visible,#practicePage button:focus-visible{outline:4px solid #f3b921;outline-offset:3px}
+#practicePage .card{border-radius:26px}
+#practicePage .prompt{font-size:clamp(1.15rem,2.3vw,1.6rem);font-weight:800;line-height:1.35}
+#familyPickerGrid button{min-height:96px;border-radius:20px}
+#familyPage .family-selection-heading{font-size:clamp(1.8rem,4vw,2.8rem)}
+#wordGrid button,#sentenceGrid button{min-height:100px;border-radius:22px}
+#practicePage .toolbar{gap:12px}
+#practicePage .shared-navigation{gap:12px}
+#homeContinue{background:#f9c846;color:#1e3151;font-size:1.25rem}
+#homeFinal{background:#eaf1ff;font-size:1.2rem}
+#practiceUsers{font-size:1.1rem}
+#parentSettingsButton{font-size:1rem}
+#continuePractice{background:#ffcf47;color:#24324e;font-size:clamp(1.2rem,2.5vw,1.7rem)}
+@media(max-width:640px){
+ #activityTabs{gap:6px}
+ #activityTabs .nav{min-height:95px;padding:8px 4px;font-size:1rem}
+ #practicePage .page-heading{padding:12px}
+ #practicePage .toolbar .nav{min-height:56px}
+}
+
+#readSentences[hidden],#openFamilyGroupQuiz[hidden],#activityTabs[hidden]{display:none!important}
+
+/* Clean family selection screen; retain hidden controls for existing JavaScript. */
+#practicePage:has(#familyPage:not([hidden])) > .page-heading,
+#practicePage:has(#familyPage:not([hidden])) > #homeContinue,
+#practicePage:has(#familyPage:not([hidden])) > #homeFinal,
+#practicePage:has(#familyPage:not([hidden])) > #practiceUsers,
+#familyPage .kid-home-bottom,
+#familyPage #practiceSummary,
+#familyPage #openAllWords,
+#familyPage #allWordsQuizTotals {display:none!important}
+#practicePage:has(#familyPage:not([hidden])) > .shared-navigation {display:none!important}
+.site-header .header-controls {display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.site-header .header-controls #parentSettingsButton {position:static!important;display:block!important;min-height:40px;order:-2;width:100%;font-size:.9rem}
+.site-header .header-controls #switchUser {order:-1}
+#familyPage .kid-home {margin-top:0}
+#familyPage .kid-home-title {display:none}
+#familyPage .kid-home-cards .kid-learn {cursor:pointer}
+#familyPage .kid-home-cards .kid-learn:hover {filter:brightness(.97)}
+
+/* Single family heading: remove the crossed-out original heading and chip. */
+#practicePage #layoutTitle,
+#practicePage #familySound { display:none!important; }
+#practicePage .new-family-bar[hidden] { display:none!important; }
+#practicePage .new-family-bar .family-prev,
+#practicePage .new-family-bar .family-next {white-space:normal; overflow-wrap:anywhere;}
 </style>
   
+<style id="kidVisualUpgrade">
+.kid-home{margin:8px auto 24px;padding:22px;border:2px solid #d8e4f7;border-radius:28px;background:#f9fbff;color:#233554}
+.kid-home-title{text-align:center;display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.kid-home-title strong{font-size:clamp(1.55rem,3vw,2.25rem);color:#164ba3}
+.kid-home-title span{color:#55647a;font-weight:700}
+.kid-home-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kid-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:3px solid #bfd3ee;border-radius:22px;min-height:205px;padding:16px;color:#183b72;cursor:pointer}
+.kid-card strong{font-size:clamp(1.25rem,2.5vw,1.8rem)}.kid-card small,.kid-continue small{font-size:1rem;color:#4d5b70}
+.kid-picture{font-size:clamp(4rem,8vw,6rem);line-height:1.25}
+.kid-learn{background:#e4f6eb;border-color:#9cd8b3}.kid-challenge{background:#e8efff;border-color:#a9c3f3}
+.kid-continue{width:100%;min-height:92px;display:flex;align-items:center;justify-content:space-around;gap:12px;margin-top:15px;padding:12px 20px;background:#fff0cb;border:3px solid #f5d58b;border-radius:22px;color:#233554;cursor:pointer}
+.kid-continue>span:nth-child(2){display:flex;flex-direction:column;align-items:flex-start}.kid-continue strong{font-size:clamp(1.25rem,2.5vw,1.65rem)}
+.kid-home-bottom{display:flex;justify-content:space-between;gap:12px;margin-top:12px}.kid-home-bottom button{border:0;background:transparent;color:#405474;padding:12px;font-weight:700}
+.kid-family-list{padding-top:12px;border-top:2px solid #e3eaf4}
+.kid-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0;padding:10px;background:#f0f6ff;border-radius:18px;text-align:center;font-weight:800;color:#264e86}
+.kid-steps span{padding:10px 3px;background:white;border-radius:12px}
+.kid-instruction{display:flex;align-items:center;justify-content:center;gap:12px;margin:12px 0}
+.kid-instruction .prompt{margin:0}.kid-speak{font-size:1.6rem;min-width:60px;min-height:60px;border:2px solid #b8d3fa;background:#e9f2ff;border-radius:18px;cursor:pointer}
+.kid-card:focus-visible,.kid-continue:focus-visible,.kid-speak:focus-visible{outline:4px solid #f6b923;outline-offset:3px}
+@media(max-width:600px){.kid-home{padding:12px}.kid-home-cards{gap:9px}.kid-card{min-height:160px;padding:8px}.kid-picture{font-size:3.8rem}.kid-steps{font-size:.8rem;gap:3px}.kid-steps span{padding:8px 2px}.kid-home-bottom button{font-size:.85rem}}
+</style><style id="ordered-header-controls">
+/* Three matching navigation controls in one right-hand column. */
+.site-header .header-navigation {
+  display:flex!important; flex-direction:column!important;
+  align-items:stretch!important; justify-content:center!important;
+  gap:9px!important; width:100%; min-width:0;
+}
+.site-header .header-navigation > #parentSettingsButton,
+.site-header .header-navigation > #practiceUsers,
+.site-header .header-navigation > #layoutFamilies {
+  box-sizing:border-box!important; display:flex!important;
+  justify-content:center!important; align-items:center!important;
+  width:100%!important; min-height:62px!important;
+  padding:10px 14px!important; margin:0!important;
+  font-size:clamp(1rem,1.75vw,1.35rem)!important;
+  font-weight:800!important; line-height:1.2!important;
+  border:2px solid #cbdaf4!important; border-radius:17px!important;
+  background:#fff!important; color:#194a9c!important;
+  box-shadow:0 5px 0 #c5cbd6!important;
+  white-space:nowrap!important; position:static!important;
+  flex:0 0 auto!important; order:initial!important;
+}
+.site-header .header-navigation > #parentSettingsButton[hidden],
+.site-header .header-navigation > #practiceUsers[hidden],
+.site-header .header-navigation > #layoutFamilies[hidden] {display:none!important}
+.site-header {grid-template-columns:minmax(0,1fr) auto minmax(210px,300px)!important;align-items:center!important}
+@media(max-width:620px){
+ .site-header {grid-template-columns:minmax(0,1fr) minmax(145px,42%)!important}
+ .site-header .header-navigation {grid-column:2!important;grid-row:1/3!important}
+ .site-header .header-navigation > #parentSettingsButton,
+ .site-header .header-navigation > #practiceUsers,
+ .site-header .header-navigation > #layoutFamilies {font-size:.88rem!important;min-height:51px!important;padding:8px 5px!important}
+}
+</style>
+<style id="headerUnified2026">
+/* Consistent three-column top bar: brand / score and player / navigation */
+.site-header.app{display:grid!important;grid-template-columns:minmax(210px,1fr) minmax(190px,auto) minmax(220px,310px)!important;gap:18px!important;align-items:center!important;padding:16px 20px!important;min-height:0!important}
+.site-header .brand-home{grid-column:1!important;grid-row:1!important;min-width:0!important}
+.site-header .header-status{grid-column:2!important;grid-row:1!important;display:flex!important;flex-direction:row!important;justify-content:center!important;align-items:center!important;gap:14px!important;min-width:0!important}
+.site-header .header-status .stars{position:static!important;margin:0!important;display:flex!important;align-items:center!important;flex:none!important;white-space:nowrap!important}
+.site-header .header-status .learner-title{position:static!important;margin:0!important;min-width:0!important;max-width:190px!important;overflow-wrap:anywhere!important;font-size:clamp(1.1rem,2vw,1.55rem)!important;font-weight:800!important;color:#194a9c!important}
+.site-header .header-status .stars[hidden],.site-header .header-status .learner-title[hidden]{display:none!important}
+.site-header .header-navigation{grid-column:3!important;grid-row:1!important;display:flex!important;flex-direction:column!important;gap:9px!important;width:100%!important;min-width:0!important}
+.site-header .header-navigation > #parentSettingsButton,.site-header .header-navigation > #practiceUsers,.site-header .header-navigation > #layoutFamilies{width:100%!important;min-height:57px!important;font-size:clamp(1rem,1.6vw,1.3rem)!important;line-height:1.15!important;white-space:normal!important;text-align:center!important}
+.site-header .header-navigation > button.header-inactive,.site-header .header-navigation > button:disabled{background:#bdc9db!important;border-color:#a6b5ce!important;color:#3f5272!important;box-shadow:0 3px 0 #8999b2!important;cursor:default!important;opacity:1!important;filter:none!important}
+.site-header .header-controls{display:none!important}
+/* The existing heading must no longer reserve space for the moved star badge. */
+#practicePage .page-heading .stars{display:none!important}
+@media(max-width:850px){.site-header.app{grid-template-columns:minmax(0,1fr) minmax(165px,42%)!important;gap:10px!important;padding:12px!important}.site-header .brand-home{grid-column:1!important;grid-row:1!important}.site-header .header-status{grid-column:1!important;grid-row:2!important;justify-content:flex-start!important;gap:9px!important}.site-header .header-navigation{grid-column:2!important;grid-row:1/3!important}.site-header .header-navigation > #parentSettingsButton,.site-header .header-navigation > #practiceUsers,.site-header .header-navigation > #layoutFamilies{min-height:50px!important;padding:7px 5px!important;font-size:clamp(.82rem,2.3vw,1.05rem)!important}.site-header .header-status .learner-title{font-size:1rem!important}}
+@media(max-width:460px){.site-header.app{grid-template-columns:minmax(0,1fr) minmax(135px,43%)!important}.site-header .header-status{flex-wrap:wrap!important}.site-header .header-status .stars{padding:5px 8px!important}.site-header .brand-home{font-size:.9rem!important}}
+</style>
+
+<style id="headerFinalAlignmentFix">
+.site-header.app{display:grid!important;grid-template-columns:minmax(250px,1fr) minmax(175px,auto) minmax(250px,310px)!important;align-items:center!important;column-gap:24px!important;row-gap:10px!important;min-height:0!important;padding:16px 20px!important}
+.site-header .brand-home{grid-column:1!important;grid-row:1!important;align-self:center!important;min-width:0!important}
+.site-header .header-status{grid-column:2!important;grid-row:1!important;display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:center!important;gap:14px!important;min-width:0!important;white-space:nowrap!important}
+.site-header .header-status .stars{display:inline-flex!important;position:static!important;align-items:center!important;flex-shrink:0!important;margin:0!important}
+.site-header .header-status .learner-title:not([hidden]){display:inline-block!important;position:static!important;margin:0!important;max-width:180px!important;font-size:clamp(1.1rem,2vw,1.55rem)!important;font-weight:800!important;color:#194a9c!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.site-header .header-status .learner-title[hidden],.site-header .header-status .stars[hidden]{display:none!important}
+.site-header .header-navigation{grid-column:3!important;grid-row:1!important;display:flex!important;flex-direction:column!important;gap:9px!important;align-items:stretch!important;justify-content:center!important;width:100%!important;min-width:0!important;visibility:visible!important}
+.site-header .header-navigation > button{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:57px!important;box-sizing:border-box!important;white-space:nowrap!important;text-align:center!important;margin:0!important}
+.site-header .header-navigation > button:disabled{background:#bdc9db!important;color:#3f5272!important;border-color:#a6b5ce!important;opacity:1!important;cursor:default!important}
+.site-header.login-header .header-status{visibility:hidden!important}
+@media(max-width:850px){.site-header.app{grid-template-columns:minmax(0,1fr) minmax(165px,43%)!important;column-gap:10px!important}.site-header .brand-home{grid-column:1!important;grid-row:1!important}.site-header .header-status{grid-column:1!important;grid-row:2!important;justify-content:flex-start!important;gap:8px!important}.site-header .header-navigation{grid-column:2!important;grid-row:1/3!important}.site-header .header-navigation > button{min-height:49px!important;font-size:clamp(.82rem,2.4vw,1.08rem)!important;padding:6px!important}}
+@media(max-width:460px){.site-header .header-status .learner-title:not([hidden]){max-width:90px!important;font-size:1rem!important}.site-header .header-status .stars{padding:5px 8px!important}.site-header .header-navigation > button{white-space:normal!important}}
+</style>
+<style id="brandScoreLeftAlignedFix">
+/* Brand at upper left; score and player directly below, in the same left column. */
+.site-header.app{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(230px,310px)!important;grid-template-rows:auto auto!important;align-items:start!important;column-gap:20px!important;row-gap:12px!important;padding:16px 20px!important}
+.site-header .brand-home{grid-column:1!important;grid-row:1!important;align-self:start!important;justify-self:start!important;margin:0!important;padding:0!important}
+.site-header .header-status{grid-column:1!important;grid-row:2!important;display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;justify-content:flex-start!important;gap:12px!important;min-width:0!important;margin:0!important;padding:0 0 0 12px!important;white-space:nowrap!important}
+.site-header .header-status .stars:not([hidden]){display:inline-flex!important;position:static!important;align-items:center!important;flex:0 0 auto!important;visibility:visible!important;margin:0!important}
+.site-header .header-status .learner-title:not([hidden]){display:inline-block!important;position:static!important;flex:0 1 auto!important;margin:0!important;max-width:min(48vw,300px)!important;font-size:clamp(1.1rem,2vw,1.6rem)!important;line-height:1.2!important;color:#194a9c!important;overflow:hidden!important;text-overflow:ellipsis!important}
+.site-header .header-status .stars[hidden],.site-header .header-status .learner-title[hidden]{display:none!important}
+.site-header .header-navigation{grid-column:2!important;grid-row:1 / 3!important;align-self:start!important;display:flex!important;flex-direction:column!important;gap:9px!important;width:100%!important}
+.site-header.login-header .header-status{visibility:hidden!important}
+@media(max-width:850px){.site-header.app{grid-template-columns:minmax(0,1fr) minmax(150px,43%)!important;column-gap:10px!important;row-gap:10px!important}.site-header .header-status{grid-column:1!important;grid-row:2!important;justify-content:flex-start!important;gap:8px!important;padding-left:0!important}.site-header .header-navigation{grid-column:2!important;grid-row:1 / 3!important}}
+@media(max-width:460px){.site-header.app{padding:12px 8px!important}.site-header .brand-home{font-size:.9rem!important}.site-header .header-status .learner-title:not([hidden]){max-width:90px!important;font-size:1rem!important}}
+</style>
+<style id="alignScoreWithFamiliesButton">
+.site-header.app{position:relative!important}
+.site-header .header-status{position:absolute!important;left:20px!important;bottom:16px!important;grid-column:auto!important;grid-row:auto!important;max-width:calc(100% - 350px)!important;transform:none!important}
+@media(max-width:850px){.site-header .header-status{left:8px!important;bottom:12px!important;max-width:calc(57% - 20px)!important}}
+@media(max-width:460px){.site-header .header-status{gap:5px!important}.site-header .header-status .learner-title:not([hidden]){max-width:80px!important}}
+</style><style id="finalBrandAndScoreLayout">
+.site-header.app{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(250px,32%)!important;grid-template-rows:auto 1fr!important;column-gap:20px!important;align-items:start!important}
+.site-header.app .brand-home{grid-column:1!important;grid-row:1!important;align-self:start!important;font-size:clamp(1.55rem,2.6vw,2.35rem)!important;line-height:1.15!important;white-space:normal!important;padding:0!important;margin:0!important}
+.site-header.app .brand-home small{font-size:clamp(1rem,1.6vw,1.4rem)!important;line-height:1.3!important;margin-top:6px!important}
+.site-header.app .header-status{grid-column:1!important;grid-row:2!important;align-self:end!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;flex-direction:row!important;gap:18px!important;padding:0 0 4px 12px!important;margin:0!important;min-height:65px!important;overflow:visible!important}
+.site-header.app .header-status .stars:not([hidden]){display:inline-flex!important;align-items:center!important;visibility:visible!important;opacity:1!important;position:static!important;flex:0 0 auto!important;padding:8px 14px!important;font-size:1.3rem!important}
+.site-header.app .header-status .learner-title:not([hidden]){display:block!important;max-width:none!important;font-size:clamp(1.8rem,3.2vw,2.8rem)!important;font-weight:900!important;line-height:1.1!important;white-space:nowrap!important;overflow:visible!important}
+.site-header.app .header-status .stars[hidden],.site-header.app .header-status .learner-title[hidden]{display:none!important}
+.site-header.app .header-navigation{grid-column:2!important;grid-row:1 / 3!important;align-self:stretch!important;display:flex!important;flex-direction:column!important;gap:9px!important}
+@media(max-width:650px){.site-header.app{grid-template-columns:minmax(0,1fr) minmax(155px,43%)!important;gap:8px!important}.site-header.app .brand-home{font-size:clamp(1rem,3.6vw,1.5rem)!important}.site-header.app .brand-home small{font-size:.78rem!important}.site-header.app .header-status{gap:7px!important;padding-left:0!important;min-height:48px!important}.site-header.app .header-status .stars:not([hidden]){padding:5px 8px!important;font-size:1rem!important}.site-header.app .header-status .learner-title:not([hidden]){font-size:clamp(1.2rem,4vw,1.7rem)!important;max-width:115px!important;overflow:hidden!important;text-overflow:ellipsis!important}}
+</style>
+
+<style id="familyNavigationRedesign">
+/* Hide crossed-out duplicate family headings, old navigation and instruction banners. */
+#wordsPage .toolbar,#wordsPage .family-head,#practicePage .family-navigation,
+#wordsPage .kid-instruction,#sentencesPage .kid-instruction {display:none!important}
+#practicePage .centered-heading.family-heading #layoutTitle,
+#practicePage .centered-heading.family-heading #familySound {display:none!important}
+#practicePage .centered-heading.family-heading {position:relative!important}
+.new-family-bar{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,2.4fr) minmax(90px,1fr);align-items:center;gap:12px;padding:15px 12px}
+.new-family-bar button{cursor:pointer;border:2px solid #cbdaf6;background:white;color:#184a9d;border-radius:18px;min-height:66px;font-weight:800}
+.new-family-bar .family-audio-title{background:transparent;border:0;box-shadow:none;font-size:clamp(1.5rem,4.5vw,3.5rem);line-height:1.12}
+.new-family-bar .family-audio-title .family-ending{color:#ce252c}
+.new-family-bar .family-prev,.new-family-bar .family-next{font-size:clamp(.95rem,1.8vw,1.35rem);padding:8px}
+#pageInstructionSpeaker{position:absolute;left:55%;bottom:17px;transform:translateX(-50%);width:66px;height:66px;border:2px solid #b9d0f6;background:#e8f2ff;border-radius:20px;font-size:2rem;cursor:pointer;z-index:3}
+.site-header.app{position:relative!important}
+#pageInstructionSpeaker:focus-visible,.new-family-bar button:focus-visible{outline:4px solid #f6bf3a;outline-offset:3px}
+@media(max-width:850px){#pageInstructionSpeaker{left:55%;bottom:8px;width:48px;height:48px;font-size:1.5rem}.new-family-bar{gap:4px;grid-template-columns:1fr 2fr 1fr}.new-family-bar button{min-height:52px}}
+</style>
+
+<style id="compactWordCardAndRedArrows">
+/* Only the family ending inside each navigation arrow changes color. */
+.new-family-bar .family-prev .family-ending,
+.new-family-bar .family-next .family-ending {
+  color:#c62828!important;
+  font-weight:900;
+}
+/* Reduce unused vertical space in the word-practice card.
+   Leave tap targets, question feedback and the audio controls intact. */
+#wordsPage.card {
+  padding-top:clamp(14px,2.5vw,24px)!important;
+  padding-bottom:clamp(14px,2.5vw,24px)!important;
+  min-height:0!important;
+}
+#wordsPage .word-grid {
+  margin-top:8px!important;
+  row-gap:12px;
+}
+#wordsPage .word-grid .word {
+  min-height:76px;
+}
+#wordsPage .actions {
+  margin-top:14px!important;
+  margin-bottom:0!important;
+}
+#wordsPage .game-message {
+  margin-top:8px!important;
+  min-height:22px;
+}
+@media(max-width:600px){
+  #wordsPage .word-grid .word{min-height:70px}
+}
+</style>
+
+<style id="wordPracticeBottomSpacingFix">
+/* Target the actual inner section.card (not the outer #wordsPage). */
+#wordsPage > section.card {
+  min-height: 0 !important;
+  height: auto !important;
+  padding-top: 22px !important;
+  padding-bottom: 12px !important;
+}
+#wordsPage > section.card .actions {
+  margin-top: 14px !important;
+  margin-bottom: 0 !important;
+}
+#wordsPage > section.card #gameMessage:empty {
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#wordsPage > section.card #gameMessage:not(:empty) {
+  margin-top: 10px !important;
+  min-height: 22px;
+}
+#wordsPage > section.card #storageNotice[hidden] { display: none !important; }
+</style>
 </head>
 <body>
   <audio id="introSong" preload="auto" src="audio/songs/Intro.mp3"></audio>
@@ -490,7 +743,7 @@
   </dialog>
   <header class="site-header app">
     <div class="brand-home" id="brandHome">🎓 <span>Elari WonderWorks<small>Word Families Level 1 · 50 Families</small></span></div>
-    <div class="header-controls"><span class="learner-title" id="learnerTitle">Choose a User</span><button class="nav" id="switchUser" type="button" hidden>Switch User</button></div>
+    <div class="header-status" id="headerStatus"><span class="learner-title" id="learnerTitle" hidden></span></div><div class="header-controls" hidden><button class="nav" id="switchUser" type="button" hidden>Switch User</button></div>
   </header>
   <main class="app start-page" id="startPage">
     <section class="card start-card" aria-labelledby="startTitle">
@@ -500,7 +753,7 @@
         <form id="userForm">
           <label class="name-label" for="previousUser">Choose a User</label>
           <select id="previousUser" required></select>
-          <button class="start-button" id="continuePractice" type="button">▶️ Continue My Practice<small id="continueDetail" hidden></small></button>
+          <button class="start-button" id="continuePractice" type="button">▶️ Continue Playing<small id="continueDetail" hidden></small></button>
           
         </form>
         <button class="change-name new-user-button" id="createNewUser" type="button">➕ New User</button>
@@ -517,28 +770,36 @@
   </main>
   <main class="app" id="practicePage" hidden>
     <button class="nav" id="practiceUsers" type="button">Users</button>
-    <button class="challenge" id="homeContinue" type="button">▶️ Continue My Practice</button>
-    <button class="nav" id="homeFinal" type="button">🏆 Final Challenge</button>
+    <button class="challenge" id="homeContinue" type="button">▶️ Continue Playing</button>
+    <button class="nav" id="homeFinal" type="button">🏆 Play Challenge</button>
     <button class="nav" id="parentSettingsButton" type="button">⚙️ Parent Settings</button>
     <div class="page-heading"><div><p class="eyebrow" id="layoutContext">Word Families Level 1</p><h1 id="layoutTitle" tabindex="-1">Choose a Word Family</h1></div>
       <div class="stars" aria-label="Words, sentences, and family quiz answers solved"><span aria-hidden="true">⭐</span><span id="starCount">0</span></div></div>
-    <nav class="shared-navigation" aria-label="Page navigation"><button class="nav" id="layoutBack" type="button">← Back</button><button class="nav" id="layoutFamilies" type="button">All Families</button><p id="layoutProgress" role="status"></p></nav>
-    <nav class="activity-tabs" id="activityTabs" aria-label="Family activities" hidden>
-      <button class="nav" id="layoutWords" type="button">Words</button><button class="nav" id="layoutSentences" type="button">Sentences</button><button class="nav" id="layoutQuiz" type="button">Quiz</button>
-    </nav>
+    <nav class="shared-navigation" aria-label="Page navigation"><button class="nav" id="layoutBack" type="button">← Back</button><button class="nav" id="layoutFamilies" type="button">🏠 All Families</button><p id="layoutProgress" role="status"></p></nav>
+    <nav id="activityTabs" hidden aria-hidden="true"><button id="layoutWords" type="button">Words</button><button id="layoutSentences" type="button">Sentences</button><button id="layoutQuiz" type="button">Challenge</button></nav>
     <nav class="activity-tabs" id="hubTabs" aria-label="All words activities" hidden><button class="nav" id="layoutBrowse" type="button">Explore All Words</button><button class="nav" id="layoutAllQuiz" type="button">Final Word Challenge</button></nav>
     <div hidden><button id="changeName" type="button">Switch User</button></div>
 
 
     <section class="card" id="familyPage" aria-labelledby="familySelectionTitle">
-      <h2 class="family-selection-heading" id="familySelectionTitle" tabindex="-1">Choose a Word Family</h2>
+      <section class="kid-home" aria-label="Learning home">
+ <div class="kid-home-title"><strong>Elari WonderWorks</strong><span>Word Families · Level 1</span></div>
+ <div class="kid-home-cards">
+  <button id="kidLearn" class="kid-card kid-learn" type="button"><span class="kid-picture" aria-hidden="true">📖</span><strong>Learn Words</strong><small>Choose a family</small></button>
+  <button id="kidChallenge" class="kid-card kid-challenge" type="button"><span class="kid-picture" aria-hidden="true">🏆</span><strong>Challenge</strong><small>Play a quiz</small></button>
+ </div>
+ <button id="kidContinue" class="kid-continue" type="button"><span aria-hidden="true">▶️</span><span><strong>Continue Playing</strong><small>Pick up where you stopped</small></span><span aria-hidden="true">➜</span></button>
+ <div class="kid-home-bottom"><button id="kidChangeUser" type="button">👤 Change Player</button><button id="kidSettings" type="button">⚙️ Parent Settings</button></div>
+ </section>
+ <div class="kid-family-list" id="kidFamilyList">
+<h2 class="family-selection-heading" id="familySelectionTitle" tabindex="-1">Choose a Word Family</h2>
       <div id="allWordsQuizTotals" role="status" aria-label="All words quiz selections" style="text-align:center; margin:12px 0; font-size:0.9rem; font-weight:700">
         All Words Quiz · Correct: <span id="allQuizCorrect">0</span> · Wrong: <span id="allQuizWrong">0</span>
       </div>
       <p class="prompt" id="practiceSummary">Choose a family or continue your practice.</p>
-      <div class="actions"><button class="challenge" id="openAllWords" type="button">📚 All Words</button></div>
+      <div class="actions"><button class="challenge" id="openAllWords" type="button">📚 Explore Words</button></div>
       <div class="family-picker-grid" id="familyPickerGrid"></div>
-    </section>
+    </div></section>
     <section id="wordsPage" hidden aria-label="Word practice">
       <nav class="toolbar" aria-label="Word practice navigation">
         <button class="nav" id="familyBack" type="button">Back to families</button>
@@ -550,13 +811,13 @@
       <div class="family-head">
         <div class="page-count" id="pageCount"></div>
         <h2 id="familyTitle"></h2>
-        <p class="prompt">Listen, then choose the word.</p>
+        <div class="kid-instruction"><button type="button" class="kid-speak" data-instruction="word" aria-label="Hear word practice instructions">🔊</button><p class="prompt">Listen. Then find the word.</p></div>
         <button class="family-chip sound" id="familySound">🔊 Hear the family sound</button>
       </div>
       <div class="word-grid" id="wordGrid"></div>
       <div class="actions">
         <button class="challenge" id="challenge">🎯 Listen &amp; Find the Word</button>
-        <button class="challenge" id="readSentences" type="button">📖 Read Sentences</button>
+        <button class="challenge" id="readSentences" type="button" hidden>📖 Read Sentences</button>
       </div>
       <p class="game-message" id="gameMessage" role="status"></p>
       <p id="storageNotice" class="name-error" role="status" hidden>Progress cannot be saved in this browser right now. Keep this page open to continue.</p>
@@ -571,12 +832,10 @@
         <div class="family-head">
           <div class="page-count" id="sentencesCount"></div>
           <h2 id="sentencesTitle" tabindex="-1"></h2>
-          <p class="prompt">Listen, then choose the sentence.</p>
-        </div>
-        
-      <div class="sentence-grid" id="sentenceGrid"></div>
+          <div class="kid-instruction"><button type="button" class="kid-speak" data-instruction="sentence" aria-label="Hear sentence practice instructions">🔊</button><p class="prompt">Listen. Then find the sentence.</p></div>
+        </div><div class="sentence-grid" id="sentenceGrid"></div>
         <div class="actions"><button class="challenge" id="sentenceChallenge" type="button">🎯 Listen &amp; Find the Sentence</button></div>
-        <div class="actions"><button class="challenge" id="openFamilyGroupQuiz" type="button">🎯 Family Group Quiz</button></div>
+        <div class="actions"><button class="challenge" id="openFamilyGroupQuiz" type="button" hidden>🎯 Family Group Quiz</button></div>
         <p class="game-message" id="sentenceMessage" role="status"></p>
       </section>
 
@@ -636,7 +895,7 @@
     <footer><p id="learnerFooter">Elara and Ari • Love, Dad</p><button class="change-name" id="resetProgress" type="button">Reset Progress</button></footer>
   </main>
   <div class="burst" id="burst" aria-hidden="true">🌟</div>
-<dialog id="wordReadDialog" aria-labelledby="wordReadTitle"><h2 id="wordReadTitle">Read Along</h2><div id="wordReadParts" class="sound-parts"></div><div id="wordReadSentence" class="read-sentence"></div><p id="wordReadStatus" class="read-status" role="status">Choose how to read.</p><div class="read-actions"><button type="button" id="readWholeWord">🔊 Read Word</button></div><div class="read-actions read-navigation"><button type="button" id="readPrevious">← Previous Word</button><button type="button" id="readNext">Next Word →</button></div></dialog>
+<dialog id="wordReadDialog" aria-labelledby="wordReadTitle"><h2 id="wordReadTitle">Read Along</h2><div id="wordReadParts" class="sound-parts"></div><div id="wordReadSentence" class="read-sentence"></div><p id="wordReadStatus" class="read-status" role="status">Choose how to read.</p><div class="read-actions" id="guidedBlendActions"><button type="button" id="readHearSounds">🔊 Hear Sounds</button><button type="button" id="readBlendSounds">🔊 Blend Sounds</button><button type="button" id="readWholeWord">🔊 Read Word</button></div><div class="read-actions read-navigation"><button type="button" id="readPrevious">← Previous Word</button><button type="button" id="readNext">Next Word →</button></div></dialog>
   <script src="data.js"></script>
   <script src="legacy-family-order.js"></script>
   <script src="sentences.js"></script>
@@ -900,7 +1159,9 @@ if (completed && !label) {
       function playRecording(kind, value, after, onFailure, keepSentenceQueue = false) {
         stopAudio(!keepSentenceQueue);
         const id = playbackId;
-        const source = `audio/${kind}/${audioFileName(value)}.mp3?v=core50-v1`;
+        const sentenceEntry = kind === 'sentences' ? sentenceData.find(item => item.file === value) : null;
+        const recordingName = sentenceEntry ? (sentenceEntry.audioFile || sentenceEntry.file) : audioFileName(value);
+        const source = `audio/${kind}/${recordingName}.mp3?v=core50-v1`;
         const audio = audioPlayer;
         audio.src = source;
         audio.playbackRate = AUDIO_PLAYBACK_SPEED;
@@ -1049,7 +1310,9 @@ if (completed && !label) {
             const userId = activeUser?.id, familyIndex = index;
             scheduleAutoAdvance(chooseSentenceChallenge, () => !sentencesPage.hidden && activeUser?.id === userId && index === familyIndex);
           } else {
-            sentenceMessage.textContent = '🏆 All 3 sentences found! Tap Family Challenge to continue.';
+            sentenceMessage.textContent = '⭐ All 3 sentences found! Next: Family Challenge.';
+            const userId = activeUser?.id, familyIndex = index;
+            scheduleAutoAdvance(() => showFamilyQuizActivity(), () => !sentencesPage.hidden && activeUser?.id === userId && index === familyIndex);
           }
         } else {
           playChallengeSentence(item);
@@ -1080,17 +1343,22 @@ if (completed && !label) {
       const wordReadSentence = document.getElementById('wordReadSentence');
       const wordReadStatus = document.getElementById('wordReadStatus');
       let readPopupEntry = null, readPopupToken = 0, readPopupTimer = null;
-      const phonemeCodes = {
-        a:'a-short',b:'b',c:'k',d:'d',e:'e-short',f:'f',g:'g',h:'h',i:'i-short',j:'j',k:'k',l:'l',m:'m',n:'n',o:'o-short',p:'p',q:'k',r:'r',s:'s',t:'t',u:'u-short',v:'v',w:'w',x:'k-s',y:'y',z:'z',
-        sh:'sh',ch:'ch',th:'th',wh:'w',ph:'f',ck:'k',ng:'ng',qu:'k-w',ee:'ee',oo:'oo',ai:'ai',ay:'ai',oa:'oa',igh:'igh',ar:'ar',or:'or',er:'er',ir:'er',ur:'er',ow:'ow',ou:'ow',oi:'oi',oy:'oi',au:'aw',aw:'aw'
-      };
-      function soundChunks(word) {
-        const clean = word.toLowerCase().replace(/[^a-z]/g,'');
-        const tokens = clean.match(/igh|tch|sh|ch|th|wh|ph|ck|ng|qu|ee|oo|ai|ay|oa|ar|or|er|ir|ur|ow|ou|oi|oy|au|aw|[a-z]/g) || [];
-        // A letter sequence is not always a phoneme. Only enable Sound It Out
-        // for simple decodable CVC words, common digraphs and vowel teams.
-        return tokens.map(part=>({part,code:phonemeCodes[part] || null}));
-      }
+       // Sound-to-spelling map. Files are optional until you add the MP3 recordings.
+       // Longest matching spelling is selected first. Irregular words need manual review.
+       const phonemeCodes = {
+         a:'short_a',b:'b',c:'k',d:'d',e:'short_e',f:'f',g:'g',h:'h',i:'short_i',j:'j',k:'k',l:'l',m:'m',n:'n',o:'short_o',p:'p',r:'r',s:'s',t:'t',u:'short_u',v:'v',w:'w',y:'y',z:'z',
+         sh:'sh',ch:'ch',th:'th_unvoiced',wh:'w',ph:'f',ck:'k',ng:'ng',ee:'long_e',ay:'long_a',ai:'long_a',oa:'long_o',igh:'long_i',ar:'ar',or:'or',er:'er',ir:'er',ur:'er',ow:'ow',ou:'ow',oi:'oy',oy:'oy',au:'aw',aw:'aw'
+       };
+       const soundSpellings = Object.keys(phonemeCodes).sort((a,b)=>b.length-a.length);
+       function soundChunks(word){
+         const clean=String(word||'').toLowerCase().replace(/[^a-z]/g,'');
+         const chunks=[];
+         for(let i=0;i<clean.length;){
+           const part=soundSpellings.find(spelling=>clean.startsWith(spelling,i)) || clean[i];
+           chunks.push({part,code:phonemeCodes[part]||null});i+=part.length;
+         }
+         return chunks;
+       }
       function clearPopupTiming(){ if(readPopupTimer!==null)clearInterval(readPopupTimer);readPopupTimer=null; }
       function popupCancelAudio(){readPopupToken++;clearPopupTiming();stopAudio();}
       function closeReadPopup(){popupCancelAudio();if(wordReadDialog.open)wordReadDialog.close();}
@@ -1141,12 +1409,13 @@ if (completed && !label) {
         renderPopupParts(entry.word || '');
         renderPopupSentence(entry.sentence || '');
         
-        wordReadStatus.textContent='Tap Read Word to listen again.';
+        wordReadStatus.textContent=entry.kind==='words'?'Choose Hear Sounds, Blend Sounds, or Read Word.':'Tap Read Word to listen.';
+         document.getElementById('guidedBlendActions').querySelectorAll('button').forEach(button=>{button.hidden=entry.kind==='sentences'&&button.id!=='readWholeWord';});
         if(!wordReadDialog.open)wordReadDialog.showModal();
         updatePopupNavigation();
         readPopupWhole();
       }
-      function popupPlayFile(path,onDone,onError){
+      function popupPlayFile(path,onDone,onError,rate=AUDIO_PLAYBACK_SPEED){
         stopAudio();const token=readPopupToken;
         const player=audioPlayer;activeAudio=player;player.src=path;player.playbackRate=AUDIO_PLAYBACK_SPEED;
         player.preservesPitch=true;
@@ -1161,7 +1430,8 @@ if (completed && !label) {
         const parts=[...wordReadParts.children],words=[...wordReadSentence.querySelectorAll('span')];
         parts.forEach(p=>p.classList.remove('active','all'));words.forEach(p=>p.classList.remove('active'));
         wordReadStatus.textContent='Reading...';
-        const path=entry.kind==='sentences' ? `audio/sentences/${audioFileName(entry.file)}.mp3` : `audio/words/${audioFileName(entry.word)}.mp3`;
+        const sentenceRecording = entry.kind === 'sentences' ? sentenceData.find(item => item.file === entry.file) : null;
+        const path=entry.kind==='sentences' ? `audio/sentences/${sentenceRecording?.audioFile || entry.audioFile || entry.file}.mp3` : `audio/words/${audioFileName(entry.word)}.mp3`;
         popupPlayFile(path,()=>{if(token!==readPopupToken)return;clearPopupTiming();wordReadStatus.textContent='Finished! Replay or sound it out.';entry.after?.();},()=>{wordReadStatus.textContent='Audio unavailable.';});
         if(entry.kind==='words')parts.forEach(p=>p.classList.add('all'));
         else readPopupTimer=setInterval(()=>{
@@ -1184,27 +1454,51 @@ if (completed && !label) {
           words.forEach((p,i)=>p.classList.toggle('active',i===idx));
         },60);
       }
-      function readPopupSounds(){
-        if(!readPopupEntry?.word)return;
-        popupCancelAudio();const token=readPopupToken,entry=readPopupEntry;
-        const chunks=soundChunks(entry.word),spans=[...wordReadParts.children];
-        if(chunks.some(x=>!x.code)){wordReadStatus.textContent='This word needs a reviewed phonics recording.';return;}
-        let i=0;
-        function advance(){
-          if(token!==readPopupToken)return;
-          spans.forEach((p,j)=>{p.classList.toggle('active',j===i);p.classList.remove('all');});
-          if(i===chunks.length){
-            spans.forEach(p=>{p.classList.remove('active');p.classList.add('all');});
-            wordReadStatus.textContent='Now blend the whole word.';
-            popupPlayFile(`audio/words/${audioFileName(entry.word)}.mp3`,()=>{if(token===readPopupToken){wordReadStatus.textContent='Great reading!';entry.after?.();}},()=>{wordReadStatus.textContent='Whole word recording unavailable.';});
-            return;
-          }
-          const code=chunks[i++].code;
-          wordReadStatus.textContent='Sound '+i+' of '+chunks.length;
-          popupPlayFile(`audio/phonemes/${code}.mp3`,advance,()=>{wordReadStatus.textContent='Sound recording unavailable.';});
-        }
-        advance();
-      }
+       // Event-driven timing: advance highlighting on actual audio completion,
+       // not guessed phoneme durations. Missing recordings stop gracefully.
+       function guidedSounds(mode){
+         if(!readPopupEntry?.word || readPopupEntry.kind!=='words')return;
+         popupCancelAudio();
+         const token=readPopupToken,entry=readPopupEntry;
+         const chunks=soundChunks(entry.word),spans=[...wordReadParts.children];
+         if(chunks.some(x=>!x.code)){
+           wordReadStatus.textContent='This word needs a reviewed phoneme mapping.';return;
+         }
+         let position=0;
+         function highlight(count){
+           spans.forEach((span,i)=>{
+             span.classList.toggle('active',mode==='hear'&&i===count-1);
+             span.classList.toggle('blend',mode==='blend'&&i<count);
+             span.classList.remove('all');
+           });
+         }
+         function next(){
+           if(token!==readPopupToken)return;
+           if(position>=chunks.length){
+             spans.forEach(span=>{span.classList.remove('active','blend');span.classList.add('all');});
+             if(mode==='hear'){
+               wordReadStatus.textContent='Now tap Blend Sounds to put them together.';
+               return;
+             }
+             wordReadStatus.textContent='Listen to the whole word.';
+             popupPlayFile(`audio/words/${audioFileName(entry.word)}.mp3`,()=>{
+               if(token!==readPopupToken)return;
+               wordReadStatus.textContent='Great blending! Tap Read Word to hear it again.';
+               entry.after?.();
+             },()=>{if(token===readPopupToken)wordReadStatus.textContent='Slow-word audio not added yet.';});
+             return;
+           }
+           const item=chunks[position++];
+           highlight(position);
+           wordReadStatus.textContent=mode==='hear' ? `Sound ${position} of ${chunks.length}` : `Blend ${position} of ${chunks.length}`;
+           popupPlayFile(`audio/phonemes/${item.code}.mp3`,next,()=>{
+             if(token===readPopupToken)wordReadStatus.textContent=`Missing phoneme: ${item.code}.mp3 — add it to audio/phonemes.`;
+           },1);
+         }
+         next();
+       }
+       document.getElementById('readHearSounds').addEventListener('click',()=>guidedSounds('hear'));
+       document.getElementById('readBlendSounds').addEventListener('click',()=>guidedSounds('blend'));
       document.getElementById('readWholeWord').addEventListener('click',readPopupWhole);
       
       
@@ -1220,7 +1514,22 @@ if (completed && !label) {
       function keyFor(word) { return `${families[index].family}:${word}`; }
       function persistUsers() {
         try {
-          localStorage.setItem(profilesKey, JSON.stringify({ version: 1, curriculumRevision, users, lastUserId }));
+          // Commit a family's progress only after Words, Sentences AND its 3-question Challenge.
+          // Unfinished progress remains available in this open session but is never stored.
+          const committedUsers = users.map(user => {
+            const completedFamilies = new Set(families.filter(f => familyIsComplete(f, user)).map(f => f.family));
+            const copy = {...user};
+            copy.read = (user.read || []).filter(key => completedFamilies.has(key.split(':')[0]));
+            copy.found = (user.found || []).filter(key => completedFamilies.has(key.split(':')[0]));
+            copy.foundSentences = (user.foundSentences || []).filter(id => {
+              const sentence = sentenceData.find(s => s.file === id);
+              return sentence && completedFamilies.has(sentence.family);
+            });
+            copy.familyQuiz = (user.familyQuiz || []).filter(key => completedFamilies.has(key.split(':')[0]));
+            copy.familyQuizTargets = Object.fromEntries(Object.entries(user.familyQuizTargets || {}).filter(([family]) => completedFamilies.has(family)));
+            return copy;
+          });
+          localStorage.setItem(profilesKey, JSON.stringify({ version: 1, curriculumRevision, users:committedUsers, lastUserId }));
           document.querySelector('#storageNotice').hidden = true;
         } catch {
           document.querySelector('#storageNotice').hidden = false;
@@ -1359,7 +1668,9 @@ if (completed && !label) {
               const userId = activeUser?.id, familyIndex = index;
               scheduleAutoAdvance(chooseChallenge, () => !wordsPage.hidden && activeUser?.id === userId && index === familyIndex);
             } else {
-              message.textContent = '🏆 All 6 words found! Tap Sentences to continue.';
+              message.textContent = '⭐ All 6 words found! Next: Sentences.';
+              const userId = activeUser?.id, familyIndex = index;
+              scheduleAutoAdvance(() => showSentences(), () => !wordsPage.hidden && activeUser?.id === userId && index === familyIndex);
             }
           } else {
             button.classList.add('wrong');
@@ -1547,6 +1858,7 @@ if (completed && !label) {
         burst.classList.remove('show');
         practicePage.hidden = true;
         startPage.hidden = false;
+        syncLayout();
         nameError.hidden = true;
         previousUser.replaceChildren();
         users.forEach(user => {
@@ -1829,7 +2141,7 @@ if (completed && !label) {
         let targets=activeUser.familyQuizTargets[item.family];
         if(!targets){
           const done=item.words.filter(w=>saved.has(keyFor(w))).slice(0,3);
-          targets=[...done,...shuffle(item.words.filter(w=>!saved.has(keyFor(w)))).slice(0,3-done.length)];
+          targets=shuffle([...done,...shuffle(item.words.filter(w=>!saved.has(keyFor(w)))).slice(0,3-done.length)]);
           activeUser.familyQuizTargets[item.family]=targets;persistUsers();
         }
         familyQuizState={words:targets.filter(w=>!saved.has(keyFor(w))),position:0,heard:false,solved:false,complete:false};
@@ -1908,7 +2220,15 @@ if (completed && !label) {
         if (++familyQuizState.position < familyQuizState.words.length) { renderFamilyWordQuestion(); fq('familyWordHear').click(); return; }
         familyQuizState.complete = true;
         fq('familyWordCounter').textContent = '3 of 3 words found!';
-        fq('familyWordFeedback').textContent = '🏆 All 3 words found! Tap Next Family to continue.';
+        fq('familyWordFeedback').textContent = '🏆 Family complete! Your progress is saved.';
+        saveProgress();
+        const userId = activeUser?.id, familyIndex = index;
+        scheduleAutoAdvance(() => {
+          if (activeUser?.id !== userId || index !== familyIndex) return;
+          const next = nearbyUnfinishedFamily(1);
+          if (next === index) showFamilySelection();
+          else resumeFamily(next);
+        }, () => !familyGroupQuizPage.hidden && activeUser?.id === userId && index === familyIndex);
         fq('familyWordNext').hidden = true; updateFamilyQuizControls();
         celebrate('🏆');
         syncLayout();
@@ -1923,7 +2243,7 @@ if (completed && !label) {
       const layout = id => document.getElementById(id);
       const headingRow = layout('layoutTitle').parentElement.parentElement;
       headingRow.classList.add('centered-heading');
-      document.querySelector('.header-controls').append(document.querySelector('.stars'));
+      /* Star badge stays inside headerStatus; do not move it during navigation. */
       
       headingRow.append(layout('layoutProgress'));
       layout('layoutTitle').after(layout('familySound'));
@@ -1968,14 +2288,29 @@ if (completed && !label) {
       
       function setLayoutText(id,value){if(layout(id).textContent!==value)layout(id).textContent=value;}
       function syncLayout(){
+        layout('activityTabs').hidden=true;
         const picking=practicePage.hidden;
-        layout('learnerTitle').hidden=picking;document.querySelector('.stars').hidden=picking;
+        document.querySelector('.site-header .header-navigation')?.removeAttribute('hidden');
+        layout('learnerTitle').hidden=picking;
+        document.querySelector('.stars').hidden=picking;
+        // Login: Users is intentionally unavailable; All Families is the current page on the picker.
+        const usersButton=layout('practiceUsers'), familiesButton=layout('layoutFamilies');
+        if(usersButton.textContent.trim()!=='👥 Users') usersButton.textContent='👥 Users';
+        usersButton.disabled=picking;
+        usersButton.classList.toggle('header-inactive',picking);
+        usersButton.setAttribute('aria-disabled',String(picking));
+        const onFamilies=!picking && !familyPage.hidden;
+        familiesButton.disabled=picking || onFamilies;
+        familiesButton.classList.toggle('header-inactive',picking || onFamilies);
+        familiesButton.setAttribute('aria-disabled',String(picking || onFamilies));
+        document.querySelector('.site-header').classList.toggle('login-header',picking);
+        
         const familyActivity=!picking && (!wordsPage.hidden||!sentencesPage.hidden||!familyGroupQuizPage.hidden);
-        layout('activityTabs').hidden=!familyActivity;
-        familyNavigation.hidden=!familyActivity;homeNavigation.hidden=picking;
+        layout('activityTabs').hidden=true;
+        familyNavigation.hidden=!familyActivity;homeNavigation.hidden=false;
         if(familyActivity){
           const card=(!wordsPage.hidden?wordsPage:!sentencesPage.hidden?sentencesPage:familyGroupQuizPage).querySelector('.card');
-          if(layout('activityTabs').parentElement!==card)card.prepend(layout('activityTabs'));
+          // The activities now advance sequentially; no activity tabs.
         }
         layout('browseFamilyFilter').hidden=picking||hub.hidden||!q('quizPanel').hidden;
         layout('hubTabs').classList.toggle('browse-navigation',!q('browseFamilyFilter').hidden);
@@ -2017,6 +2352,123 @@ if (completed && !label) {
       document.getElementById('welcomeNotice').showModal();
 
     })();
-  </script>
+  
+// Keep one working Parent Settings button, positioned above the Users button.
+const parentControl = document.getElementById('parentSettingsButton');
+const headerNavigation = document.querySelector('.site-header .header-navigation');
+if (parentControl && headerNavigation) headerNavigation.prepend(parentControl);
+if (typeof syncLayout === "function") syncLayout();
+// Put the real score and the learner's name together on one line.
+const headerStatus = document.getElementById('headerStatus');
+const headerStars = document.querySelector('#practicePage .stars');
+if (headerStatus && headerStars) headerStatus.prepend(headerStars);
+
+
+// Child-friendly visual shortcuts use the original app's existing navigation.
+document.getElementById('kidLearn').addEventListener('click',()=>document.getElementById('openAllWords').click());
+document.getElementById('kidChallenge').addEventListener('click',()=>document.getElementById('homeFinal').click());
+document.getElementById('kidContinue').addEventListener('click',()=>document.getElementById('homeContinue').click());
+document.getElementById('kidChangeUser').addEventListener('click',()=>document.getElementById('practiceUsers').click());
+document.getElementById('kidSettings').addEventListener('click',()=>document.getElementById('parentSettingsButton').click());
+// Only these two explicit instruction buttons speak. No hover or general interface narration.
+// Prefer pre-recorded MP3s when provided, with browser voice as an optional fallback.
+document.querySelectorAll('.kid-speak').forEach(button=>button.addEventListener('click',()=>{
+ const sentence=button.dataset.instruction==='word'
+ ? 'Listen, then choose the word you hear.'
+ : 'Listen, then choose the sentence you hear.';
+ const file='audio/instructions/'+(button.dataset.instruction==='word'?'choose-word.mp3':'choose-sentence.mp3');
+ if(window.speechSynthesis)window.speechSynthesis.cancel();
+ const clip=new Audio(file);
+ clip.onerror=()=>{
+   if(window.speechSynthesis){
+     const utterance=new SpeechSynthesisUtterance(sentence);
+     utterance.rate=.85;window.speechSynthesis.speak(utterance);
+   } else {button.setAttribute('title',sentence);}
+ };
+ clip.play().catch(()=>clip.onerror());
+}));
+
+(function(){
+  const header=document.querySelector('.site-header');
+  const pageSpeaker=document.createElement('button');
+  pageSpeaker.id='pageInstructionSpeaker';
+  pageSpeaker.type='button';pageSpeaker.textContent='🔊';
+  pageSpeaker.setAttribute('aria-label','Hear instructions for this page');
+  pageSpeaker.title='Hear page instructions';
+  header.append(pageSpeaker);
+  const instructionFiles={
+    login:'login.mp3',families:'choose-family.mp3',words:'choose-word.mp3',
+    sentences:'choose-sentence.mp3',challenge:'family-challenge.mp3',
+    browse:'explore-words.mp3',final:'final-challenge.mp3'
+  };
+  let instructionAudio=null;
+  pageSpeaker.addEventListener('click',()=>{
+    const visible=id=>{const el=document.getElementById(id);return el&&!el.hidden};
+    let page='login';
+    if(visible('practicePage')){
+      page=visible('familyPage')?'families':visible('wordsPage')?'words':
+      visible('sentencesPage')?'sentences':visible('familyGroupQuizPage')?'challenge':
+      visible('hub')?(visible('quizPanel')?'final':'browse'):'families';
+    }
+    const filename=instructionFiles[page];
+    if(instructionAudio){instructionAudio.pause();instructionAudio=null}
+    const audio=new Audio('audio/instructions/'+filename);
+    instructionAudio=audio;
+    audio.onerror=()=>{pageSpeaker.title='Add audio/instructions/'+filename+' to hear these instructions';};
+    audio.play().catch(()=>{pageSpeaker.title='Recording unavailable: '+filename;});
+  });
+  const bar=document.createElement('div');bar.className='new-family-bar';
+  const prev=document.createElement('button'),name=document.createElement('button'),next=document.createElement('button');
+  prev.type=next.type=name.type='button';
+  prev.className='family-prev';name.className='family-audio-title';next.className='family-next';
+  name.setAttribute('aria-label','Hear this word family sound');
+  bar.append(prev,name,next);
+  const heading=document.getElementById('layoutTitle');
+  heading.parentElement.append(bar);
+  const families=Array.isArray(window.families)?window.families:null;
+  function update(){
+    const visible=['wordsPage','sentencesPage','familyGroupQuizPage'].some(id=>!document.getElementById(id).hidden);
+    bar.hidden=!visible;
+    if(!visible)return;
+    // The app's render() already knows the true curriculum order and writes
+    // the previous/next family names to its original (hidden) buttons.
+    const previousText=document.getElementById('previous').textContent;
+    const nextText=document.getElementById('next').textContent;
+    const prevMatch=previousText.match(/\((-?[a-z]+)\)/i);
+    const nextMatch=nextText.match(/\((-?[a-z]+)\)/i);
+    const title=heading.textContent.trim();
+    const titleMatch=title.match(/-([a-z]+)\s+Family/i);
+    if(titleMatch){
+      const ending='-'+titleMatch[1];
+      name.replaceChildren();
+      const red=document.createElement('span');red.className='family-ending';red.textContent=ending;
+      name.append(red,document.createTextNode(' Family'));
+    }
+    // Build the labels as DOM nodes so the family ending is red.
+    // textContent prevents the family names from being treated as HTML.
+    function setArrowLabel(button, label, arrowFirst) {
+      const ending=document.createElement('span');
+      ending.className='family-ending';
+      ending.textContent=label;
+      button.replaceChildren();
+      if(arrowFirst) button.append(document.createTextNode('⬅ '),ending);
+      else button.append(ending,document.createTextNode(' ➡'));
+    }
+    setArrowLabel(prev,prevMatch?prevMatch[1]:'',true);
+    setArrowLabel(next,nextMatch?nextMatch[1]:'',false);
+    prev.disabled=!prevMatch;
+    next.disabled=!nextMatch;
+  }
+  prev.addEventListener('click',()=>document.getElementById('previous').click());
+  next.addEventListener('click',()=>document.getElementById('next').click());
+  name.addEventListener('click',()=>document.getElementById('familySound').click());
+  const observer=new MutationObserver(update);
+  observer.observe(heading,{childList:true,subtree:true,characterData:true});
+  observer.observe(document.getElementById('previous'),{childList:true,subtree:true,characterData:true});
+  observer.observe(document.getElementById('next'),{childList:true,subtree:true,characterData:true});
+  ['wordsPage','sentencesPage','familyGroupQuizPage'].forEach(id=>observer.observe(document.getElementById(id),{attributes:true,attributeFilter:['hidden']}));
+  update();
+})();
+</script>
 </body>
 </html>

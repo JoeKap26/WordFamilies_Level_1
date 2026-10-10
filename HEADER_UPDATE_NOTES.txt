@@ -1,0 +1,1 @@
+Header: score and learner name share a row; login hides score/name and disables Users; All Families disabled on family selection; three consistent navigation buttons. Original audio and progress unchanged.

@@ -1,0 +1,10 @@
+Sequential lesson update:
+1. Each family begins with six Listen & Select word questions.
+2. On completing all six, automatically advances to three sentence questions.
+3. On completing all three, automatically advances to the three-question Family Challenge.
+4. Only a family with all three stages complete is persisted to browser storage.
+5. Closing or reloading before the Family Challenge is complete resets that family's progress.
+6. After completion, the next unfinished family opens automatically.
+The previous activity tabs and four-step strip have been removed.
+Important: Progress in a currently unfinished family remains in memory while the page stays open.
+All existing MP3 files and lesson data are unchanged.

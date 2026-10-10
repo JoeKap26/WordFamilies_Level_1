@@ -1,0 +1,6 @@
+Family selection cleanup:
+- Removed crossed-out title, duplicate upper buttons, lower Change Player and Parent Settings.
+- Moved functional Parent Settings to top-right header, above user control.
+- Book/Learn Words card now opens Explore Words (via existing openAllWords handler).
+- Kept Challenge and Continue Playing cards.
+- Preserved the family grid, audio, progress, and sequential lesson logic.

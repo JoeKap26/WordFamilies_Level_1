@@ -1,0 +1,27 @@
+PAGE INSTRUCTION MP3 RECORDINGS — generate separately in ElevenLabs
+Save the resulting MP3 files to audio/instructions/ using these exact names.
+Do not include filenames or tags in the spoken recording.
+
+login.mp3
+Choose a user to begin playing.
+
+choose-family.mp3
+Choose a word family to start learning. Tap a family to begin.
+
+choose-word.mp3
+Tap Listen and Select the Word. Listen carefully, then tap the word you hear.
+
+choose-sentence.mp3
+Tap Listen and Select the Sentence. Listen carefully, then tap the sentence you hear.
+
+family-challenge.mp3
+Listen to the word, then choose the correct answer to finish the family challenge.
+
+explore-words.mp3
+Explore all the words and choose a family to practice.
+
+final-challenge.mp3
+Tap Hear the Word. Listen carefully, then choose the correct word.
+
+Family name buttons reuse the existing family-examples recording (e.g., an like can).
+The header speaker uses MP3 only; no system text-to-speech fallback.

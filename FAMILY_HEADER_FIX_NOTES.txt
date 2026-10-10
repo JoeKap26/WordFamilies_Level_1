@@ -1,0 +1,1 @@
+Removed the old duplicate family heading and example sound chip from display. The clickable new family heading retains its sound playback. Arrow labels now follow the original application previous/next family state, including immediately after login. Existing audio and data are unchanged.

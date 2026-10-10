@@ -1,0 +1,21 @@
+GUIDED BLENDING SETUP — WORD FAMILIES LEVEL 1
+
+Added buttons to the existing Read Along popup for WORDS:
+  Hear Sounds — plays each phoneme in sequence, highlighting the corresponding letter group.
+  Blend Sounds — progressively highlights the letter groups as phonemes play, then plays the slow full word.
+  Read Word — preserves the existing whole-word playback.
+
+You can install the code now even without the recordings. If audio is missing, the popup reports the missing file.
+
+Put MP3 files here:
+  audio/phonemes/short_a.mp3, short_e.mp3, short_i.mp3, short_o.mp3, short_u.mp3
+  audio/phonemes/b.mp3, k.mp3, d.mp3, f.mp3, etc.
+  audio/phonemes/sh.mp3, ch.mp3, th_unvoiced.mp3, etc.
+  audio/words/cat.mp3, hat.mp3, etc. (your existing slow word recordings)
+
+IMPORTANT LIMITATIONS:
+- This is an initial spelling-to-sound map. Some words require manually reviewed phoneme groupings and pronunciation mappings (silent-e, consonant blends, context-dependent letters, irregular spellings).
+- Blending plays discrete phoneme clips and then a slow natural whole-word recording. It does not create seamless coarticulated speech or synchronize within the natural word recording.
+- MP3 phoneme files should be named using the table previously discussed, with names such as short_a.mp3 (not a-short.mp3).
+- Sentences retain the existing Read Word/Read Along behavior.
+- Test with cat, fan, ship and back after audio is added, and review more complex words before wider rollout.

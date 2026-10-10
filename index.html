@@ -818,6 +818,28 @@
 /* Soften family-page activity rectangles and family selection squares */
 #practicePage .family-actions button, #practicePage .family-action, #practicePage .family-card, #familiesPage .family-card, .family-tile {filter:saturate(.82);}
 </style>
+<style id="familyProgressGreenAndContrast20261010">
+/* Unstarted families retain the varied soft pastel colors. */
+#familyPage .family-tile:not(.started) {color:#17263d!important;}
+#familyPage .family-tile:not(.started) .family-tile-example,
+#familyPage .family-tile:not(.started) .family-progress {color:#17263d!important;}
+/* Restore the old dark-green progress tiles, overriding the pastel nth-child rules. */
+#familyPage .family-tile.started,
+#familyPage .family-tile.started:nth-child(n) {
+ background:#237a39!important;
+ border-color:#165527!important;
+ box-shadow:0 6px 0 #165527!important;
+ color:#fff!important;
+}
+#familyPage .family-tile.started .family-tile-example,
+#familyPage .family-tile.started .family-progress,
+#familyPage .family-tile.started .family-completion {color:#fff!important;}
+/* Preserve red word-family patterns inside both examples and circles. */
+#familyPage .family-tile .family-circle {background:#fff!important;color:#b52b2b!important;}
+#familyPage .family-tile .family-tile-example .family-label,
+#familyPage .family-tile .family-tile-example .family-highlight,
+#familyPage .family-tile .family-tile-example .family-part {color:#c62828!important;}
+</style>
 </head>
 <body>
   <audio id="introSong" preload="auto" src="audio/songs/Intro.mp3"></audio>
@@ -1162,6 +1184,7 @@
 const completed = familyIsComplete(item, activeUser);
 
 button.classList.toggle('completed', completed);
+button.classList.toggle('started', completed || item.words.some(word => foundWords.has(`${item.family}:${word}`)) || sentenceData.some(sentence => sentence.family === item.family && foundSentences.has(sentence.file)) || familyQuizCount(item) > 0);
 
 let label = button.querySelector('.family-completion');
 

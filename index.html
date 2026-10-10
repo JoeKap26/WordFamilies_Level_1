@@ -540,6 +540,44 @@
 #practicePage .new-family-bar[hidden] { display:none!important; }
 #practicePage .new-family-bar .family-prev,
 #practicePage .new-family-bar .family-next {white-space:normal; overflow-wrap:anywhere;}
+
+/* Compact, responsive reading popup */
+#wordReadDialog{width:min(94vw,680px);max-height:90dvh;overflow:auto;padding:clamp(12px,2.5vw,22px);box-sizing:border-box}
+#wordReadTitle:empty{display:none}
+#wordReadDialog .sound-parts{margin:8px 0 10px;gap:6px}
+#wordReadDialog .read-sentence{line-height:1.45;margin:8px 0}
+#wordReadDialog .read-status{min-height:0;margin:5px 0;font-size:clamp(.85rem,2.5vw,1rem)}
+#wordReadDialog .read-status:empty{display:none}
+#wordReadDialog .read-actions{margin:10px 0;gap:7px}
+#wordReadDialog .read-actions button{min-width:0;padding:10px 12px;line-height:1.2;font-size:clamp(.88rem,2.5vw,1rem)}
+#wordReadDialog #guidedBlendActions{display:flex;flex-wrap:nowrap;align-items:stretch}
+#wordReadDialog #guidedBlendActions button{flex:1 1 0;white-space:nowrap}
+#wordReadDialog #guidedBlendActions button[hidden]{display:none}
+#wordReadDialog .read-navigation button{flex:1 1 0;min-width:0;overflow-wrap:anywhere}
+@media(max-width:400px){#wordReadDialog #guidedBlendActions button{padding:9px 5px;font-size:.85rem}}
+
+/* Illustrated popup controls: compact, consistent and touch-friendly */
+#wordReadDialog #guidedBlendActions{display:flex;flex-wrap:nowrap;gap:8px;align-items:stretch;justify-content:center;margin:9px 0}
+#wordReadDialog #guidedBlendActions button{display:flex;flex:1 1 0;min-width:0;max-width:190px;align-items:center;justify-content:center;flex-direction:column;gap:3px;padding:6px 5px 7px;line-height:1.1;white-space:normal}
+#wordReadDialog #guidedBlendActions button img{width:100%;height:clamp(56px,13vw,100px);object-fit:contain;display:block;pointer-events:none}
+#wordReadDialog #guidedBlendActions button span{font-size:clamp(.85rem,2vw,1.05rem);font-weight:800}
+#wordReadDialog .read-navigation{margin:8px 0 2px}
+@media(max-width:420px){#wordReadDialog #guidedBlendActions{gap:5px}#wordReadDialog #guidedBlendActions button{padding:5px 3px}#wordReadDialog #guidedBlendActions button img{height:65px}}
+
+/* Friendly header illustrations and gentle reading popup palette */
+.brand-cap-image{width:clamp(38px,4vw,58px);height:clamp(38px,4vw,58px);object-fit:contain;vertical-align:middle;flex-shrink:0}
+.header-status{display:flex;align-items:center;gap:9px}
+.superkid-avatar{width:clamp(57px,6.6vw,93px);height:clamp(57px,6.6vw,93px);object-fit:contain;border-radius:12px}
+.superkid-avatar[hidden]{display:none!important}
+#wordReadDialog{background:#fbfcff;color:#354963;border:1px solid #e2eaf4;box-shadow:0 16px 45px #25395526}
+#wordReadDialog::backdrop{background:#33465b70}
+#wordReadDialog .sound-part{background:#f0f4fa;color:#314966}
+#wordReadDialog .sound-part.active{background:#fff1b9;color:#35465c}
+#wordReadDialog .sound-part.all{background:#dff4e7}
+#wordReadDialog .sound-part.blend{background:#dceefa;color:#314966}
+#wordReadDialog .read-actions button{background:#6d94c6;color:#fff}
+#wordReadDialog .read-navigation button{background:#75a9a3;color:#fff}
+#wordReadDialog .read-sentence span.active{background:#fff1b9}
 </style>
   
 <style id="kidVisualUpgrade">
@@ -670,10 +708,11 @@
 .new-family-bar .family-audio-title{background:transparent;border:0;box-shadow:none;font-size:clamp(1.5rem,4.5vw,3.5rem);line-height:1.12}
 .new-family-bar .family-audio-title .family-ending{color:#ce252c}
 .new-family-bar .family-prev,.new-family-bar .family-next{font-size:clamp(.95rem,1.8vw,1.35rem);padding:8px}
-#pageInstructionSpeaker{position:absolute;left:55%;bottom:17px;transform:translateX(-50%);width:66px;height:66px;border:2px solid #b9d0f6;background:#e8f2ff;border-radius:20px;font-size:2rem;cursor:pointer;z-index:3}
+#pageInstructionSpeaker{position:absolute;left:50%;bottom:17px;transform:translateX(-50%);width:92.4px;height:92.4px;border:0;background:transparent;border-radius:0;padding:0;cursor:pointer;z-index:3}
 .site-header.app{position:relative!important}
+#pageInstructionSpeaker img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none}
 #pageInstructionSpeaker:focus-visible,.new-family-bar button:focus-visible{outline:4px solid #f6bf3a;outline-offset:3px}
-@media(max-width:850px){#pageInstructionSpeaker{left:55%;bottom:8px;width:48px;height:48px;font-size:1.5rem}.new-family-bar{gap:4px;grid-template-columns:1fr 2fr 1fr}.new-family-bar button{min-height:52px}}
+@media(max-width:850px){#pageInstructionSpeaker{left:50%;bottom:8px;width:67.2px;height:67.2px;font-size:1.5rem}.new-family-bar{gap:4px;grid-template-columns:1fr 2fr 1fr}.new-family-bar button{min-height:52px}}
 </style>
 
 <style id="compactWordCardAndRedArrows">
@@ -733,7 +772,16 @@
 }
 #wordsPage > section.card #storageNotice[hidden] { display: none !important; }
 </style>
-</head>
+<style id="family-image-navigation-upgrade">
+#familyPage .kid-home-cards-updated{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}
+#familyPage .kid-image-card{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;padding:8px 12px;border-radius:20px;cursor:pointer;overflow:hidden}
+#familyPage .kid-image-card img{display:block;width:100%;height:clamp(105px,16vw,205px);object-fit:contain}
+#familyPage .kid-learn-wide{display:flex;width:100%;margin-top:12px;background:#e4f6eb;border:2px solid #9cd8b3}
+#familyPage .kid-learn-wide img{height:clamp(110px,17vw,205px)}
+#familyPage .kid-home-cards-updated .kid-continue{width:auto;background:#e8f5ee;border:2px solid #a6d8c2}
+#familyPage .kid-image-card:hover{filter:brightness(.98)}
+@media(max-width:540px){#familyPage .kid-home-cards-updated{gap:8px}#familyPage .kid-image-card{padding:5px}#familyPage .kid-image-card img{height:110px}#familyPage .kid-learn-wide img{height:125px}}
+</style></head>
 <body>
   <audio id="introSong" preload="auto" src="audio/songs/Intro.mp3"></audio>
   <dialog id="parentSettings" aria-label="Parent Settings"><h2>Parent Settings</h2><div id="parentSettingsContent"></div></dialog>
@@ -742,8 +790,8 @@
     <form method="dialog"><button type="submit" autofocus>OK</button></form>
   </dialog>
   <header class="site-header app">
-    <div class="brand-home" id="brandHome">🎓 <span>Elari WonderWorks<small>Word Families Level 1 · 50 Families</small></span></div>
-    <div class="header-status" id="headerStatus"><span class="learner-title" id="learnerTitle" hidden></span></div><div class="header-controls" hidden><button class="nav" id="switchUser" type="button" hidden>Switch User</button></div>
+    <div class="brand-home" id="brandHome"><img class="brand-cap-image" src="hat.png" alt="Graduation cap"> <span>Elari WonderWorks<small>Word Families Level 1 · 50 Families</small></span></div>
+    <div class="header-status" id="headerStatus"><span class="learner-title" id="learnerTitle" hidden></span><img class="superkid-avatar" src="superkid.png?v=2" alt="Superkid" hidden></div><div class="header-controls" hidden><button class="nav" id="switchUser" type="button" hidden>Switch User</button></div>
   </header>
   <main class="app start-page" id="startPage">
     <section class="card start-card" aria-labelledby="startTitle">
@@ -784,11 +832,11 @@
     <section class="card" id="familyPage" aria-labelledby="familySelectionTitle">
       <section class="kid-home" aria-label="Learning home">
  <div class="kid-home-title"><strong>Elari WonderWorks</strong><span>Word Families · Level 1</span></div>
- <div class="kid-home-cards">
-  <button id="kidLearn" class="kid-card kid-learn" type="button"><span class="kid-picture" aria-hidden="true">📖</span><strong>Learn Words</strong><small>Choose a family</small></button>
-  <button id="kidChallenge" class="kid-card kid-challenge" type="button"><span class="kid-picture" aria-hidden="true">🏆</span><strong>Challenge</strong><small>Play a quiz</small></button>
+ <div class="kid-home-cards kid-home-cards-updated">
+  <button id="kidContinue" class="kid-card kid-continue kid-image-card" type="button" aria-label="Continue Playing"><img src="continue.png" alt="Continue Playing"></button>
+  <button id="kidChallenge" class="kid-card kid-challenge kid-image-card" type="button" aria-label="Challenge"><img src="Quiz.png" alt="Challenge Quiz"></button>
  </div>
- <button id="kidContinue" class="kid-continue" type="button"><span aria-hidden="true">▶️</span><span><strong>Continue Playing</strong><small>Pick up where you stopped</small></span><span aria-hidden="true">➜</span></button>
+ <button id="kidLearn" class="kid-learn kid-image-card kid-learn-wide" type="button" aria-label="Learn Words"><img src="wordlist.png" alt="Learn Words — Word List"></button>
  <div class="kid-home-bottom"><button id="kidChangeUser" type="button">👤 Change Player</button><button id="kidSettings" type="button">⚙️ Parent Settings</button></div>
  </section>
  <div class="kid-family-list" id="kidFamilyList">
@@ -895,7 +943,7 @@
     <footer><p id="learnerFooter">Elara and Ari • Love, Dad</p><button class="change-name" id="resetProgress" type="button">Reset Progress</button></footer>
   </main>
   <div class="burst" id="burst" aria-hidden="true">🌟</div>
-<dialog id="wordReadDialog" aria-labelledby="wordReadTitle"><h2 id="wordReadTitle">Read Along</h2><div id="wordReadParts" class="sound-parts"></div><div id="wordReadSentence" class="read-sentence"></div><p id="wordReadStatus" class="read-status" role="status">Choose how to read.</p><div class="read-actions" id="guidedBlendActions"><button type="button" id="readHearSounds">🔊 Hear Sounds</button><button type="button" id="readBlendSounds">🔊 Blend Sounds</button><button type="button" id="readWholeWord">🔊 Read Word</button></div><div class="read-actions read-navigation"><button type="button" id="readPrevious">← Previous Word</button><button type="button" id="readNext">Next Word →</button></div></dialog>
+<dialog id="wordReadDialog" aria-labelledby="wordReadTitle"><h2 id="wordReadTitle"></h2><div id="wordReadParts" class="sound-parts"></div><div id="wordReadSentence" class="read-sentence"></div><p id="wordReadStatus" class="read-status" role="status"></p><div class="read-actions" id="guidedBlendActions"><button type="button" id="readHearSounds"><img src="hear.png" alt="" aria-hidden="true"><span>Hear</span></button><button type="button" id="readBlendSounds"><img src="blend.png" alt="" aria-hidden="true"><span>Blend</span></button><button type="button" id="readWholeWord"><img src="read.png" alt="" aria-hidden="true"><span>Read</span></button></div><div class="read-actions read-navigation"><button type="button" id="readPrevious">← Previous Word</button><button type="button" id="readNext">Next Word →</button></div></dialog>
   <script src="data.js"></script>
   <script src="legacy-family-order.js"></script>
   <script src="sentences.js"></script>
@@ -1339,6 +1387,8 @@ if (completed && !label) {
 
       // Popup uses phoneme MP3s rather than speech synthesis letter names.
       const wordReadDialog = document.getElementById('wordReadDialog');
+      const popupReadImage = document.querySelector('#readWholeWord img');
+
       const wordReadParts = document.getElementById('wordReadParts');
       const wordReadSentence = document.getElementById('wordReadSentence');
       const wordReadStatus = document.getElementById('wordReadStatus');
@@ -1391,8 +1441,8 @@ if (completed && !label) {
       function updatePopupNavigation(){
         const {entries,position}=popupPosition();
         const sentence=readPopupEntry?.kind==='sentences';
-        readPrevious.textContent=sentence?'← Previous Sentence':'← Previous Word';
-        readNext.textContent=sentence?'Next Sentence →':'Next Word →';
+        readPrevious.textContent=position>0 ? '← '+(sentence ? entries[position-1].sentence : entries[position-1].word) : '';
+        readNext.textContent=position>=0&&position<entries.length-1 ? (sentence ? entries[position+1].sentence : entries[position+1].word)+' →' : '';
         readPrevious.hidden=position<=0;
         readNext.hidden=position<0||position>=entries.length-1;
       }
@@ -1404,12 +1454,14 @@ if (completed && !label) {
       readPrevious.addEventListener('click',()=>navigatePopup(-1));
       readNext.addEventListener('click',()=>navigatePopup(1));
       function showReadPopup(entry){
+        if(popupReadImage) popupReadImage.src = entry.kind === "sentences" ? "clickToRead.png" : "read.png";
         popupCancelAudio();readPopupEntry=entry;
-        document.getElementById('wordReadTitle').textContent=entry.word ? `Read: ${entry.word}` : 'Read Along';
+        document.getElementById('wordReadTitle').textContent=entry.kind==='sentences' ? '' : '';
         renderPopupParts(entry.word || '');
-        renderPopupSentence(entry.sentence || '');
+        renderPopupSentence(entry.kind === 'sentences' ? (entry.word || '') : '');
+        wordReadSentence.hidden = entry.kind !== 'sentences';
         
-        wordReadStatus.textContent=entry.kind==='words'?'Choose Hear Sounds, Blend Sounds, or Read Word.':'Tap Read Word to listen.';
+        wordReadStatus.textContent='';
          document.getElementById('guidedBlendActions').querySelectorAll('button').forEach(button=>{button.hidden=entry.kind==='sentences'&&button.id!=='readWholeWord';});
         if(!wordReadDialog.open)wordReadDialog.showModal();
         updatePopupNavigation();
@@ -1432,7 +1484,7 @@ if (completed && !label) {
         wordReadStatus.textContent='Reading...';
         const sentenceRecording = entry.kind === 'sentences' ? sentenceData.find(item => item.file === entry.file) : null;
         const path=entry.kind==='sentences' ? `audio/sentences/${sentenceRecording?.audioFile || entry.audioFile || entry.file}.mp3` : `audio/words/${audioFileName(entry.word)}.mp3`;
-        popupPlayFile(path,()=>{if(token!==readPopupToken)return;clearPopupTiming();wordReadStatus.textContent='Finished! Replay or sound it out.';entry.after?.();},()=>{wordReadStatus.textContent='Audio unavailable.';});
+        popupPlayFile(path,()=>{if(token!==readPopupToken)return;clearPopupTiming();wordReadStatus.textContent='';entry.after?.();},()=>{wordReadStatus.textContent='Audio unavailable.';});
         if(entry.kind==='words')parts.forEach(p=>p.classList.add('all'));
         else readPopupTimer=setInterval(()=>{
           if(token!==readPopupToken)return;
@@ -1492,7 +1544,7 @@ if (completed && !label) {
            highlight(position);
            wordReadStatus.textContent=mode==='hear' ? `Sound ${position} of ${chunks.length}` : `Blend ${position} of ${chunks.length}`;
            popupPlayFile(`audio/phonemes/${item.code}.mp3`,next,()=>{
-             if(token===readPopupToken)wordReadStatus.textContent=`Missing phoneme: ${item.code}.mp3 — add it to audio/phonemes.`;
+             if(token===readPopupToken)wordReadStatus.textContent='Sound unavailable';
            },1);
          }
          next();
@@ -2291,7 +2343,7 @@ if (completed && !label) {
         layout('activityTabs').hidden=true;
         const picking=practicePage.hidden;
         document.querySelector('.site-header .header-navigation')?.removeAttribute('hidden');
-        layout('learnerTitle').hidden=picking;
+        layout('learnerTitle').hidden=picking; document.querySelector('.superkid-avatar').hidden=picking;
         document.querySelector('.stars').hidden=picking;
         // Login: Users is intentionally unavailable; All Families is the current page on the picker.
         const usersButton=layout('practiceUsers'), familiesButton=layout('layoutFamilies');
@@ -2392,7 +2444,8 @@ document.querySelectorAll('.kid-speak').forEach(button=>button.addEventListener(
   const header=document.querySelector('.site-header');
   const pageSpeaker=document.createElement('button');
   pageSpeaker.id='pageInstructionSpeaker';
-  pageSpeaker.type='button';pageSpeaker.textContent='🔊';
+  pageSpeaker.type='button';
+  const infoImage=document.createElement('img');infoImage.src='info-speaker.png';infoImage.alt='Info';pageSpeaker.append(infoImage);
   pageSpeaker.setAttribute('aria-label','Hear instructions for this page');
   pageSpeaker.title='Hear page instructions';
   header.append(pageSpeaker);
@@ -2400,6 +2453,15 @@ document.querySelectorAll('.kid-speak').forEach(button=>button.addEventListener(
     login:'login.mp3',families:'choose-family.mp3',words:'choose-word.mp3',
     sentences:'choose-sentence.mp3',challenge:'family-challenge.mp3',
     browse:'explore-words.mp3',final:'final-challenge.mp3'
+  };
+  const spokenInstructions={
+    login:'Welcome to Word Families! Choose your name to continue practicing, or create a new user to get started.',
+    families:'Choose a word family to practice. You can see your progress for words, sentences, and the family challenge. Tap a family to begin.',
+    words:'Tap Listen to hear a word. Then choose the matching word. You can tap Listen again if you need to hear it another time.',
+    sentences:'Tap Listen to hear a sentence. Read the choices and select the sentence that matches what you heard.',
+    challenge:'Welcome to the Family Challenge! Tap Hear the Word, listen carefully, and choose the matching word. Complete three questions to finish.',
+    browse:'Explore the words you have learned. Choose a word to practice reading, or open the Final Word Challenge to test your skills.',
+    final:'Welcome to the Final Word Challenge! Listen to each word and choose the correct answer. Your progress is saved so you can continue later.'
   };
   let instructionAudio=null;
   pageSpeaker.addEventListener('click',()=>{
@@ -2410,12 +2472,19 @@ document.querySelectorAll('.kid-speak').forEach(button=>button.addEventListener(
       visible('sentencesPage')?'sentences':visible('familyGroupQuizPage')?'challenge':
       visible('hub')?(visible('quizPanel')?'final':'browse'):'families';
     }
-    const filename=instructionFiles[page];
-    if(instructionAudio){instructionAudio.pause();instructionAudio=null}
-    const audio=new Audio('audio/instructions/'+filename);
+    if(instructionAudio){instructionAudio.pause();instructionAudio=null;}
+    if(window.speechSynthesis)window.speechSynthesis.cancel();
+    const speak=()=>{
+      if(window.speechSynthesis){
+        const utterance=new SpeechSynthesisUtterance(spokenInstructions[page]);
+        utterance.lang='en-US';utterance.rate=.85;
+        window.speechSynthesis.speak(utterance);
+      } else pageSpeaker.title=spokenInstructions[page];
+    };
+    const audio=new Audio('audio/instructions/'+instructionFiles[page]);
     instructionAudio=audio;
-    audio.onerror=()=>{pageSpeaker.title='Add audio/instructions/'+filename+' to hear these instructions';};
-    audio.play().catch(()=>{pageSpeaker.title='Recording unavailable: '+filename;});
+    audio.addEventListener('error',()=>{if(instructionAudio===audio)speak()},{once:true});
+    audio.play().catch(()=>{if(instructionAudio===audio)speak()});
   });
   const bar=document.createElement('div');bar.className='new-family-bar';
   const prev=document.createElement('button'),name=document.createElement('button'),next=document.createElement('button');
